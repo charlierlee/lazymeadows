@@ -1,0 +1,113 @@
+/*
+  jQuery MegaMenu Plugin
+  Author: GeekTantra
+  Author URI: http://www.geektantra.com
+*/
+
+ul.megamenu {
+  float:right;  
+  padding:0;
+  margin:0;
+  list-style: none;
+  display: none;
+}
+
+ul.megamenu li.mm-item {
+	margin:0;    
+	padding:0;	
+}
+
+ul.megamenu li.mm-item:hover, ul.megamenu li.active {
+	color:#000;
+}
+
+ul.megamenu li.mm-item:last-child { margin-right:0; }
+
+
+ul.megamenu li.clear-fix {
+  float: none;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+}
+
+ul.megamenu a.mm-item-link:link, ul.megamenu a.mm-item-link:visited {
+  text-transform:uppercase;
+  position: relative;
+  z-index:2;
+  display: block;
+  color: #FFF;
+  text-decoration: none;
+  font-family: 'Oranienbaum', serif; 
+  font-size:20px;
+  background: transparent url('img/buttons/toggle.png') no-repeat right center;
+  height:48px;
+  line-height: 50px;
+  padding-right:54px;
+}
+
+*html ul.megamenu a.mm-item-link:link, *html ul.megamenu a.mm-item-link:visited {
+  border-color: pink;
+  filter: chroma(color=pink);
+}
+
+ul.megamenu a.mm-item-link-hover:link, ul.megamenu a.mm-item-link-hover:visited{
+ color:#000;
+}
+
+ul.megamenu li.active a.mm-item-link, ul.megamenu li.active a.mm-item-link:visited { 
+ color:#000;
+}
+
+ul.megamenu div.mm-item-content {
+  background: none;
+  padding: 0 0.3em 0 0.3em;
+  position: absolute; 
+  z-index: 9;
+}
+
+.mm-content-base {
+  position: relative;
+  z-index: 11 !important;
+  padding: 0;
+}
+
+.mm-content-base ul {
+	margin:0;
+	padding:2px 0 0 0;
+}
+
+.mm-content-base ul li {
+	list-style-type:none;
+	margin:0;
+	padding:0;
+	color: #FFF; 
+}
+
+.mm-content-base ul li a, 
+.mm-content-base ul li a:visited {
+	color: #fff;
+	font-family: Calibri, 'Trebuchet MS', sans-serif; 
+	font-size:18px;
+	background:#2e54a9;
+	display:block;
+	text-decoration:none;
+	padding:5px 10px 5px 10px;
+	margin:0;
+	text-align: right;
+}
+
+.mm-content-base ul li:last-child a { border-bottom:none; }
+
+.mm-content-base ul li a:hover {
+	color: #000 !important;
+}
+
+.mm-js-shadow {
+ background:none;
+  position: absolute;
+  z-index: 10;
+}
