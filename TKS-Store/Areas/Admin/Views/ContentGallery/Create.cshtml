@@ -1,0 +1,51 @@
+﻿@model TKS.Areas.Admin.Models.CMS.GalleryItemModel
+
+@{
+    ViewBag.Title = "New Gallery Slide - " + @ViewBag.Locale + " - " + @ViewBag.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+    ViewBag.SelectedTab = 0;
+}
+
+<div class="container rounded bordered">
+    <h2>New Gallery Slide - @ViewBag.Locale - @ViewBag.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = ViewBag.PageID }, new { })
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Gallery List", "index", "contentgallery", new { id = ViewBag.ModuleID }, new { })
+            </p>
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"> <b>Section:</b> @ViewBag.PageSectionName</div>
+                <div class="ym-g33 ym-gl"> <b>Module Type:</b> @ViewBag.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"> <b>Name:</b> @ViewBag.ModuleName</div>
+            </div>
+            <form id="frm" method="post" action="/admin/contentgallery/create/@ViewBag.ModuleID" enctype="multipart/form-data">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="PhotoTitle">Photo Title</label>
+                        <input type="text" value="@Model.PhotoTitle" id="PhotoTitle" name="PhotoTitle" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="PhotoLink">Photo Link</label>
+                        <input type="text" value="@Model.PhotoLink" id="PhotoLink" name="PhotoLink" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="PhotoPath" class="ym-required">Image</label>
+                        <input type="file" id="PhotoPath" name="PhotoPath" data-rule-required="true" />
+                    </div>
+                    <div class="ym-fbox">
+                        <button class="ym-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $("#frm").validate();
+    </script>
+}

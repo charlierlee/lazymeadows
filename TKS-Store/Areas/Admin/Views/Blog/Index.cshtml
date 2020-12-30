@@ -1,0 +1,41 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.Blog.BlogPostViewModel>
+
+@{
+    ViewBag.Title = "Manage Posts";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosBlog;
+    ViewBag.NavActive = "blog-posts";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Posts</h2>
+    <div class="holder">
+        <div class="inner">
+            <span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New", "Create", "blog")
+        </div>
+
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Date Published</th>
+                    <th class="align-right">Comments</th>
+                    <th class="align-right" style="white-space:nowrap">Comments<br />to Approve</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                <tr>
+                    <td>@Html.ActionLink(item.Title, "edit", "blog", new { id = item.PostSerial.ToString() }, new { })</td>
+                    <td>@item.PublishDate.ToShortDateString()</td>
+                    <td style="width:50px" class="align-right">@item.CommentCount</td>
+                    <td style="width:50px" class="align-right">@item.CommentToApproveCount</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="inner">
+            <span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New", "Create", "blog")
+        </div>
+    </div>
+</div>

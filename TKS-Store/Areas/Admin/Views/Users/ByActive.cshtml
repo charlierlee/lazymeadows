@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "Active Accounts";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosAccounts;
+    ViewBag.NavActive = "user-active";
+}
+
+<div class="container rounded bordered">
+    <h2>Active Accounts</h2>
+    <div class="holder">
+        <div class="ym-form">
+            <div class="ym-fbox-check" style="padding-top:10px">
+                @if (ViewBag.CurrentActive == 1) {
+                    <input type="radio" name="isactive" id="isactive_1" value="1" checked="checked" class="clsisactive" /><label for="isactive_1">Active</label>
+                    <input type="radio" name="isactive" id="isactive_0" value="0" class="clsisactive" /><label for="isactive_0">Inactive</label>
+                } else {
+                    <input type="radio" name="isactive" id="isactive_1" value="1" class="clsisactive" /><label for="isactive_1">Active</label>
+                    <input type="radio" name="isactive" id="isactive_0" value="0" checked="checked" class="clsisactive" /><label for="isactive_0">Inactive</label>
+                }
+            </div>
+        </div>
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col" style="text-align:right">Created</th>
+                    <th scope="col" style="text-align:right">Last Login</th>
+                    <th scope="col" style="text-align:right">Last Activity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td style="width:100px">
+                            <a href="/admin/users/edit/@item.UserName">@item.UserName</a>
+                        </td>
+                        <td>@item.Email</td>
+                        <td style="text-align:right">@item.CreationDate.ToShortDateString()</td>
+                        <td style="text-align:right">@item.LastLoginDate.ToShortDateString()</td>
+                        <td style="text-align:right">@item.LastActivityDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $(function () {
+            $(".clsisactive").change(function () {
+                window.location.href = '/admin/users/byactive/' + $(this).val();
+            });
+        });
+    </script>
+}

@@ -1,0 +1,59 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ContentVideoViewModel
+
+@{
+    ViewBag.Title = "Manage Video - " + @Model.Locale + " - " + @Model.PageURL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Video - @Model.Locale - @Model.PageURL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = Model.PageID }, new { })
+            </p>
+
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"><b>Section:</b> @Model.PageSectionName</div>
+                <div class="ym-g33 ym-gl"><b>Module Type:</b> @Model.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"><b>Name:</b> @Model.ModuleName</div>
+            </div>
+            <form id="frm" method="post" action="/admin/contentvideo/edit/@Model.ModuleID">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="VideoURL" class="ym-required">YouTube URL</label>
+                        <input type="url" id="VideoURL" name="VideoURL" value="@Model.VideoURL" data-rule-required="true" data-rule-url="true" />
+                    </div>
+                    <p>Should look like http://www.youtube.com/watch?v=eFQN0LUlm-E</p>
+                    <div class="ym-fbox">
+                        <label for="Width">Width</label>
+                        <input type="text" id="Width" name="Width" style="width:100px" value="@Model.Width" data-rule-integer="true" data-rule-min="0" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Height">Height</label>
+                        <input type="text" id="Height" name="Height" style="width:100px" value="@Model.Height" data-rule-numberinteger="true" data-rule-min="0" />
+                    </div>
+                    <div class="ym-fbox-button">
+                        <button class="ym-primary">Save</button>
+                        <input type="hidden" name="ContentID" value="@Model.ContentID" />
+                        <input type="hidden" name="ModuleID" value="@Model.ModuleID" />
+                        <input type="hidden" name="PageID" value="@Model.PageID" />
+                        <input type="hidden" name="VideoSource" value="YouTube" />
+                    </div>
+                </div>
+            </form>
+            <div style="margin-top:2em">
+            @Html.Raw(Model.Video)
+            </div>
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $(function () {
+        });
+    </script>
+}

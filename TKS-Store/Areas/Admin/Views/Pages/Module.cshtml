@@ -1,0 +1,145 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.CMS.PageSection>
+
+    <div class="ym-form ym-columnar">
+        <form id="frmModule" method="post" action="~/admin/pages/modulecreate">
+            <div class="ym-grid">
+                <div class="ym-g50 ym-gl">
+                    <div class="ym-fbox">
+                        <label for="PageSectionID" class="ym-required">Section</label>
+                        @Html.DropDownList("PageSectionID", ViewBag.PageSectionID as SelectList, "Please Select", new { style = "width:65%", data_rule_required = "true" })
+                 </div>
+                </div>
+                <div class="ym-g50 ym-gr">
+                    <div class="ym-fbox">
+                        <label for="ModuleTypeID" class="ym-required">Module</label>
+                        @Html.DropDownList("ModuleTypeID", ViewBag.ModuleTypeID as SelectList, "Please Select", new { data_rule_required = "true" })
+                    </div>
+                </div>
+            </div>
+            <div class="ym-grid">
+                <div class="ym-g50 ym-gl">
+                    <div class="ym-fbox">
+                        <label for="SortOrder">Sort Order</label>
+                        <input type="text" name="SortOrder" id="SortOrder" style="width:75px" />
+                    </div>
+                </div>
+                <div class="ym-g50 ym-gr">
+                    <div class="ym-fbox">
+                        <label for="ModuleName">Module Name</label>
+                        <input type="text" name="ModuleName" id="ModuleName" />
+                    </div>
+                </div>
+            </div>
+            <div class="ym-fbox">
+                <button id="cmdSave" class="ym-primary">Add Module</button>
+            </div>
+        </form>
+        <p><span class="el el-random el-fw el-lg"></span>Drag rows to re-order</p>
+        <table class="nohover">
+            <thead>
+                <tr>
+                    <th scope="col">Module</th>
+                    <th scope="col" style="width:50px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="3" style="padding:0">
+                    @foreach (var pageSection in Model) {
+                        <p style="margin:1em 0 0;font-weight:bold;font-size:1.25em">@pageSection.PageSectionName</p>
+                        <table class="tabular tablesortable">
+                            <tbody>
+                                @foreach (var pageModule in pageSection.Modules) {
+                                    string rowID = "row_" + pageModule.ModuleID.ToString().Replace("-", "");
+                                    <tr id="@rowID">
+                                        @if (string.IsNullOrEmpty(pageModule.ModuleName)) {
+                                            <td>@pageModule.ModuleTypeName</td>
+                                        } else {
+                                            <td>@pageModule.ModuleTypeName - @pageModule.ModuleName</td>
+                                        }
+                                        <td style="width:50px;text-align:right">
+                                            <button class="btn icon-red DeleteModule" data-module="@pageModule.ModuleID"><span class="el el-trash-alt el-fw el-lg"></span></button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+
+                        </table>
+                    }
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script type="text/javascript">
+    $(function () {
+        $("#frmModule").validate({ submitHandler: function (form) { AddModule(); } });
+
+        function AddModule() {
+            var Data = {};
+            Data.PageID = '@ViewBag.PageID';
+            Data.PageSectionID = $('#PageSectionID').val();
+            Data.ModuleTypeID = $('#ModuleTypeID').val();
+            Data.ModuleName = $('#ModuleName').val();
+            Data.SortOrder = $('#SortOrder').val();
+
+            $.ajax({
+                url: "/admin/pages/modulecreate",
+                async: false, type: "POST",
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(Data),
+                success: function () {
+                    if (location.hash != "tabs-3") { location.href = "/admin/pages/edit/@ViewBag.PageID#tabs-4"; }
+                    location.reload();
+                },
+                error: function (e) { alert(e.status + ": " + e.statusText); }
+            });
+        }
+
+        $(".DeleteModule").click(function (ev) {
+            ev.preventDefault();
+
+            if (confirm("Are you sure you want to delete this module?")) {
+                var Data = {};
+                Data.ModuleID = $(this).data('module');
+
+                $.ajax({
+                    url: "/admin/pages/moduledelete/@ViewBag.PageID",
+                    async: false, type: "POST",
+                    dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(Data),
+                    success: function () {
+                        if (location.hash != "tabs-3") { location.href = "/admin/pages/edit/@ViewBag.PageID#tabs-4"; }
+                        location.reload();
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        });
+
+        $(".tablesortable").sortable({
+            items: "tr",
+            cursor: 'move',
+            opacity: 0.8,
+            placeholder: "ui-state-highlight",
+            update: function () {
+                var order = $(this).sortable("serialize");
+                $.ajax({
+                    url: "/admin/pages/modulereorder",
+                    type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: "{order: '" + order + "'}",
+                    success: function (response) {
+                        if (response == "success") {
+                            $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                            setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                        } else {
+                            alert('An error occurred');
+                        }
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,134 @@
+﻿@model TKS.Models.realestate.MLSSearchResult
+@{
+    List<TKS.Models.realestate.MLSListing> listings = Model.Listings;
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+    List<SelectListItem> towns = ViewBag.City;
+}
+
+@if (@Model.TotalResults == 0) {
+<h1>No Matching Search Results</h1>
+} else {
+<div class="float-right"><a href="/searchland?@ViewBag.Reformat" style="font-weight:bold">Map These Results</a></div>
+<h1>Search Land Results - @ViewBag.Start to @ViewBag.End of @Model.TotalResults</h1>
+}
+@Html.Raw(ViewData["Body"])
+<div class="result">
+    <form action="/searchland" method="get" class="adv-search ym-form ym-full">
+        <div class="ym-grid linearize-level-1">
+            <div class="ym-g33 ym-gl">
+                <div class="ym-gbox">
+                    <div class="citycontainer">
+                        @foreach (SelectListItem item in towns) {
+                            <div class="ym-fbox-check">
+                            @if (item.Selected) {
+                                <input type="checkbox" checked="checked" value="@item.Text" name="city" id="@item.Text"><label for="@item.Text">@item.Text</label>
+                            } else {
+                                <input type="checkbox" value="@item.Text" name="city" id="@item.Text"><label for="@item.Text">@item.Text</label>
+                            }
+                            </div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="ym-g33 ym-gl">
+                <div class="ym-gbox">
+                    <label for="MinPrice">Price</label>
+                    <div class="ym-grid">
+                        <div class="ym-g40 ym-gl">
+                            <div class="ym-fbox-select">
+                                @Html.DropDownList("MinPrice", "Min Price")
+                            </div>
+                        </div>
+                        <div class="ym-g20 ym-gl" style="text-align:center;padding-top:5px">To</div>
+                        <div class="ym-g40 ym-gr">
+                            <div class="ym-fbox-select">
+                                @Html.DropDownList("MaxPrice", "Max Price")
+                            </div>
+                        </div>
+                    </div>
+                    <label for="Acres">Acres</label>
+                    <div class="ym-grid">
+                        <div class="ym-g40 ym-gl">
+                            <div class="ym-fbox-select">
+                                @Html.DropDownList("Acres", "Min")
+                            </div>
+                        </div>
+                        <div class="ym-g20 ym-gl" style="text-align:center;padding-top:5px">To</div>
+                        <div class="ym-g40 ym-gr">
+                            <div class="ym-fbox-select">
+                                @Html.DropDownList("Acres2", "Max")
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ym-fbox">
+                        <button>Search</button>
+                        <button id="cmdClear">Clear</button>
+                    </div>
+                </div>
+            </div>
+            <div class="ym-g33 ym-gr">
+                <div class="ym-gbox">
+                    <div><a href="/social"><img src="/assets/images/sullivan-buzz.png" style="max-width:200px;margin:1em 0 0" height="106" alt="The Sullivan Buzz - The Lowdown on a Town" class="img-responsive" /></a></div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ul class="properties list-unstyled">
+        @foreach (var listing in listings) {
+            string address = Server.UrlEncode(listing.UnparsedAddress);
+            <li>
+                <div class="item">
+                    @if (listing.Images.Count > 0) {
+                        <a href="/landdetail?mls=@listing.MLS&@Request.QueryString.ToString()"><img src="@listing.Images[0]?width=275&height=200&scale=both&mode=crop" style="max-width:275px;max-height:200px" alt="" /></a>
+                    }
+                    <div class="text">
+                        <div class="heading ym-clearfix">
+                            <div class="mls">MLS # @listing.MLS</div>
+                            <div class="address">@listing.AddressStreet</div>
+                            <div class="CityState">@listing.City, NY @listing.PostalCode</div>
+                            <div class="price">@listing.AskingAmt.ToString("#,###")</div>
+                        </div>
+                        <p>@listing.ShortDescription(150)...</p>
+                        <a href="/landdetail?mls=@listing.MLS&@Request.QueryString.ToString()" class="view">View Property</a>&nbsp;&bull;
+                        <a class="fancybox.iframe map" href="http://maps.google.com/maps?f=q&hl=en&q=@address&ie=UTF8&hq=&hnear=@address&t=h&z=14&output=embed">Map Property</a>
+                    </div>
+                </div>
+            </li>
+        }
+    </ul>
+    <div style="text-align:center;height:80px">
+        @if (Model.PrevPage.Length > 0) {
+            <a href="@Model.PrevPage"><i class="el el-chevron-left el-4x"></i></a>
+        }
+        @if (Model.NextPage.Length > 0) {
+            <a href="@Model.NextPage"><i class="el el-chevron-right el-4x"></i></a>
+        }
+    </div>
+</div>
+
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $('#cmdClear').click(function (e) {
+                e.preventDefault();
+                $("input:checkbox").prop('checked', false);
+                $("select").each(function () { this.selectedIndex = 0 });
+            });
+            $(".map").fancybox({
+                maxWidth: 800,
+                maxHeight: 600,
+                fitToView: false,
+                width: '70%',
+                height: '70%',
+                autoSize: false,
+                closeClick: false,
+                openEffect: 'none',
+                closeEffect: 'none'
+            });
+            @Html.Raw(ViewData["FooterCode"])
+        });
+    </script>
+    @Html.Raw(ViewData["Scripts"])
+}

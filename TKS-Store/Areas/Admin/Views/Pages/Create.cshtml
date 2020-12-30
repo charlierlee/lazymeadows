@@ -1,0 +1,65 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ContentPageViewModel
+
+@{
+    ViewBag.Title = "Create New Page";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+    ViewBag.SelectedTab = 0;
+}
+
+    <div class="container rounded bordered">
+        <h2>Create New Page</h2>
+        <div class="holder">
+            <div class="inner">
+                <p>&gt;&nbsp;@Html.ActionLink("Page List", "index")</p>
+                <form id="frm" method="post" action="/admin/pages/create">
+                    <div class="ym-form ym-columnar">
+                        <div class="ym-fbox">
+                            <label for="VirtualPath" class="ym-required">Virtual Path</label>
+                            <input type="text" value="@Model.VirtualPath" name="VirtualPath" id="VirtualPath" data-rule-required="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="PageTypeID" class="ym-required">Page Type</label>
+                            @Html.DropDownList("PageTypeID", ViewBag.PageTypeID as SelectList, "Please Select", new { data_rule_required = "true" })
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="Locale" class="ym-required">Locale</label>
+                            @Html.DropDownList("Locale", ViewBag.Locale as SelectList, new { data_rule_required = "true" })
+                        </div>
+                        <div class="ym-fbox-check">
+                            @Html.CheckBoxFor(model => model.IncludeInSitemap)
+                            <label for="IncludeInSitemap">Include In Sitemap</label>
+                        </div>
+                        <div class="ym-fbox">
+                            <button id="cmdSave" class="ym-primary">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+@section cphFoot {
+<script type="text/javascript">
+    $(function () {
+        @* Setup form validation *@
+        $("#frm").validate({ submitHandler: function (form) { SaveChanges(); } });
+
+        function SaveChanges() {
+            var Data = {};
+            Data.VirtualPath = $('#VirtualPath').val();
+            Data.PageTypeID = $('#PageTypeID').val();
+            Data.Locale = $('#Locale').val();
+            Data.IncludeInSitemap = $('#IncludeInSitemap').val().is(':checked') ? true : false;
+
+            $.ajax({
+                url: "/admin/pages/create/",
+                async: false, type: "POST",
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(Data),
+                error: function (e) { alert(e.status + ": " + e.statusText); }
+            });
+        }
+    });
+</script>
+}

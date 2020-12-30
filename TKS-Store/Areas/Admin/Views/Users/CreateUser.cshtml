@@ -1,0 +1,91 @@
+﻿@model TKS.Areas.Admin.Models.UserViewModel
+@{
+    ViewBag.Title = "Add Account";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosAccounts;
+    ViewBag.NavActive = "user-add";
+
+    List<TKS.Areas.Admin.Models.Role> allRoles = Model.AllRoles();
+}
+
+<div class="container rounded bordered">
+    <h2>Add Account</h2>
+    <div class="holder">
+        <div class="inner">
+            <form id="frm" action="/admin/users/createuser" method="post">
+                <div class="ym-grid">
+                    <div class="ym-g33 ym-gl">
+                        <div class="ym-gbox-left">
+                            <div class="ym-form">
+                                <h3>Roles</h3>
+                                @{
+                                    int x = 0;
+                                    foreach (TKS.Areas.Admin.Models.Role role in allRoles) {
+                                        x++;
+                                        <div class="ym-fbox-check"><input id="UserRoles_@x.ToString()" type="checkbox" name="Roles" value="@role.RoleName" /><label for="UserRoles_@x.ToString()">@role.RoleName</label></div>
+                                    }
+                                }
+                                <div class="ym-fbox">
+                                    <label for="ViewBag.AccountLevelID">Account Level</label>
+                                    @Html.DropDownList("AccountLevelID")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="ym-g66 ym-gr">
+                        <div class="ym-form ym-columnar">
+                            <h3>Main Info</h3>
+                            <div class="ym-fbox">
+                                <label for="UserName" class="ym-required">User Name</label>
+                                <input type="text" name="UserName" id="UserName" value="@Model.UserName" data-rule-required="true" />
+                            </div>
+                            <div class="ym-fbox">
+                                <label for="Password" class="ym-required">Password</label>
+                                <input type="password" name="Password" id="Password" value="@Model.Password" data-rule-required="true" />
+                            </div>
+                            <div class="ym-fbox">
+                                <label for="Email" class="ym-required">Email</label>
+                                <input type="email" name="Email" id="Email" maxlength="256" value="@Model.Email" data-rule-required="true" />
+                            </div>
+                            <div class="ym-fbox">
+                                <label for="Comment">Comment</label>
+                                <input type="text" name="Comment" id="Comment" value="@Model.Comment" />
+                            </div>
+                            <div class="ym-fbox">
+                                <label for="FirstName">First Name</label>
+                                <input type="text" name="FirstName" id="FirstName" value="@Model.FirstName" maxlength="100" />
+                            </div>
+                            <div class="ym-fbox">
+                                <label for="LastName">Last Name</label>
+                                <input type="text" name="LastName" id="LastName" value="@Model.LastName" maxlength="100" />
+                            </div>
+                            <div class="ym-fbox">
+                                <label for="LastName">Phone</label>
+                                <input type="text" name="Phone" id="Phone" value="@Model.Phone" maxlength="25" />
+                            </div>
+                            <div class="ym-fbox-check">
+                                <input type="checkbox" name="IsApproved" id="IsApproved" value="true" checked="checked" />
+                                <label for="IsApproved">Active User</label>
+                            </div>
+                            <div class="ym-fbox">
+                                <button class="ym-primary">Add User</button>
+                                @Html.AntiForgeryToken()
+                            </div>
+                            <div class="ym-fbox" style="text-align:center;color:#f00;margin: 0 0 5px">
+                                @ViewBag.StatusMessage
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+    $(function () {
+        $("#frm").validate();
+    });
+    </script>
+}

@@ -1,0 +1,304 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+ <!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @Html.Raw(ViewBag.Meta)
+    @Styles.Render("~/css/std")
+    <!--[if lte IE 7]>
+        @Styles.Render("~/css/ie")
+    <![endif]-->
+    @Scripts.Render("~/js/modernizr")
+</head>
+<body class="home">
+    <!-- Google Tag Manager -->
+    <noscript>
+        <iframe src="//www.googletagmanager.com/ns.html?id=GTM-5RRDSW"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <script>
+        (function (w, d, s, l, i) {
+            w[l] = w[l] || []; w[l].push({
+                'gtm.start':
+                    new Date().getTime(), event: 'gtm.js'
+            }); var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+            '//www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-5RRDSW');</script>
+    <!-- End Google Tag Manager -->
+    <ul class="ym-skiplinks">
+        <li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter)</a></li>
+        <li><a class="ym-skip" href="#main">Skip to main content (Press Enter)</a></li>
+    </ul>
+    <div class="vid">
+        <video autoplay loop poster="/assets/files/video.jpg">
+            <source src="~/assets/files/grass5.mp4" type="video/mp4" />
+            <img src="/assets/files/video.jpg" width="1150" height="778" alt="" />
+        </video>
+    </div>
+
+    <nav id="nav">
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <div class="ym-clearfix">
+                    <ul class="megamenu">
+                        <li>
+                            <a href="javascript:;">Menu</a>
+                            <div class="submenu">
+                                <ul class="list list-unstyled">
+                                    <li><a href="/social">The Sullivan Buzz</a></li>
+                                    <li><a href="/search">Residential Search</a></li>
+                                    <li><a href="/searchland">Land Search</a></li>
+                                    <li><a href="/searchcomm">Commercial Search</a></li>
+                                    <li><a href="/about">About Us</a></li>
+                                    <li><a href="/services">One Stop Shop</a></li>
+                                    <li><a href="/events">Community Calendar</a></li>
+                                    <li><a href="/contact-us">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header id="header">
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <div class="logo">
+                    <img src="/img/logo.png" width="267" height="350" alt="Lazy Meadows Realty" />
+                </div>
+                <form id="search" method="get" action="/search">
+                    <ul class="searchbar list-unstyled ym-clearfix">
+                        <li>
+                            <select name="type" id="type">
+                                <option value="1">Residential</option>
+                                <option value="2">Land</option>
+                                <option value="3">Commercial</option>
+                            </select>
+                        </li>
+                        <li>
+                            @Html.DropDownList("City", "Any Town")
+                        </li>
+                        <li>
+                            <select name="pricerange" id="pricerange">
+                                <option value="0">Any Price</option>
+                                <option value="1">$0 - 200k</option>
+                                <option selected="selected" value="2">$200k - 500k</option>
+                                <option value="3">$500k - 1M</option>
+                                <option value="4">$1M+</option>
+                            </select>
+                        </li>
+                        <li>
+                            <select name="acrerange" id="acrerange">
+                                <option value="0">Any Acreage</option>
+                                <option value="1">1-5 Acres</option>
+                                <option value="2">5-10 Acres</option>
+                                <option value="3">10-20 Acres</option>
+                                <option value="4">20+ Acres</option>
+                            </select>
+                        </li>
+                        <li>
+                            <button type="submit" id="listing" name="listing" value="1">Listings</button>
+                            <button type="submit" id="mapit" name="mapit" value="1">Map</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </header>
+
+    <div id="main">
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                <div class="intro">
+                    <div class="ym-grid linearize-level-1">
+                        <div class="ym-g60 ym-gl"><div class="ym-gbox-left">@Html.Raw(ViewData["Body"])</div></div>
+                        <div class="ym-g40 ym-gr">
+                            <div class="ym-gbox-right">
+                                <a href="/social"><img src="/assets/images/sullivan-buzz2.png" style="max-width:440px" height="135" alt="The Sullivan Buzz - The Lowdown on a Town" class="img-responsive" /></a>
+                                <p>Catch the buzz through social media. Each town is different and each has its own feel. See what the locals are talking about. See where <em>you</em> fit in. Start your research using our curated selection of social sites.</p>
+                                <h3 class="text-center"><a href="/social">Join the Buzz</a></h3>
+                                <h3 class="followus">Follow Us On:&nbsp;<a href="https://instagram.com/lazymeadowsrealty/" style="line-height: 20.8px;"><img alt="" src="/assets/images/Instagram.png" style="width: 40px; height: 40px;" /></a>&nbsp;&nbsp;<a href="https://www.facebook.com/lazymeadowsrealty"><img alt="" src="/assets/images/Facebook.png" style="width: 40px; height: 40px;" /></a></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sep2"></div>
+
+                <div class="featured-properties">
+                    <h3>Hand Picked Properties</h3>
+                    <ul id="carousel" class="list list-unstyled">
+                        @foreach (TKS.Models.realestate.Listing property in ViewBag.Featured) {
+                            <li>
+                                <div class="item">
+                                    @if (!string.IsNullOrEmpty(@property.ImageFirst)) {
+                                        <div class="image">
+                                            <div class="inner">
+                                                <a href="/detail?mls=@property.MLS&@Request.QueryString.ToString()"><img src="/img/listings/@property.ImageFirst?width=170&amp;height=170&amp;scale=both&amp;mode=crop" alt="@property.City Real Estate" /></a>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="text">
+                                        <div class="heading ym-clearfix">
+                                            <div class="left">@property.City</div>
+                                            <div class="right">@property.AskingPrice</div>
+                                        </div>
+                                        <p>@property.ShortDescription(150)...</p>
+                                        <a href="/detail?mls=@property.MLS&@Request.QueryString.ToString()" class="view">View Property</a>
+                                    </div>
+                                </div>
+                            </li>
+
+                        }
+                    </ul>
+                    <div class="navi">
+                        <div class="prev"></div>
+                        <div class="next"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="services">
+        <div class="ym-wrapper">
+            <div class="ym-wbox">
+                @Html.Raw(ViewData["Services"])
+            </div>
+        </div>
+    </div>
+
+    <footer id="footer">
+        <div class="community-calendar">
+            <div class="ym-wrapper">
+                <div class="ym-wbox">
+                    @Html.Action("CommunityCalendar", "Content")
+                </div>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="ym-wrapper">
+                <div class="ym-wbox">
+                    <div class="ym-grid linearize-level-1">
+                        <div class="ym-g33 ym-gl cinfo">
+                            <div class="ym-gbox">
+                                <ul class="list list-unstyled">
+                                    <li>
+                                        <div class="ym-clearfix">
+                                            <i class="el el-map-marker el-fw el-lg float-left"></i>42 Proctor Road<br />
+                                            Eldred, NY 12732
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="ym-clearfix">
+                                            <i class="el el-envelope el-fw el-lg float-left"></i><a href="mailto:homes@lazymeadowsrealty.com">homes@lazymeadowsrealty.com</a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="ym-clearfix">
+                                            <i class="el el-phone el-fw el-lg float-left"></i>(845) 397-0512
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="ym-g66 ym-gr social">
+                            <div class="ym-gbox">
+                                @*<a href="#" title="facebook" target="_blank"><i class="el el-facebook el-2x el-fw"></i></a>
+                                    <a href="#" title="Twitter" target="_blank"><i class="el el-twitter el-2x el-fw"></i></a>
+                                    <a href="#" title="LinkedIn" target="_blank"><i class="el el-linkedin el-2x el-fw"></i></a>
+                                    <a href="#" title="Google+" target="_blank"><i class="el el-googleplus el-2x el-fw"></i></a>
+                                    <a href="#" title="YouTube" target="_blank"><i class="el el-youtube el-2x el-fw"></i></a>
+                                    <a href="#" title="Pinterest" target="_blank"><i class="el el-pinterest el-2x el-fw"></i></a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    @Scripts.Render("~/js/jquery")
+    @Scripts.Render("~/js/jqueryui")
+    @Scripts.Render("~/js/jqueryval")
+    @Scripts.Render("~/js/std")
+
+    <script src="~/js/libs/jquery.caroufredsel-6.2.1.js"></script>
+    <script>
+        jQuery(function ($) {
+            $("#pricerange, #acrerange").selectmenu();
+            $("#type").selectmenu({
+                change: function (event, ui) {
+                    var type = $(this).val();
+                    if (type == '1') {
+                        $("#search").attr("action", "/search");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 200k"))
+                            .append($('<option></option>').attr("value", "2").text("$200k - 500k"))
+                            .append($('<option></option>').attr("value", "3").text("$500k - 1M"))
+                            .append($('<option></option>').attr("value", "4").text("$1M+"))
+                            .selectmenu("refresh");
+                    } else if (type == '2') {
+                        $("#search").attr("action", "/searchland");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 50k"))
+                            .append($('<option></option>').attr("value", "2").text("$50k - 100k"))
+                            .append($('<option></option>').attr("value", "3").text("$100k - 175k"))
+                            .append($('<option></option>').attr("value", "4").text("$175k+"))
+                            .selectmenu("refresh");
+                    } else if (type == '3') {
+                        $("#search").attr("action", "/searchcomm");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 200k"))
+                            .append($('<option></option>').attr("value", "2").text("$200k - 500k"))
+                            .append($('<option></option>').attr("value", "3").text("$500k - 1M"))
+                            .append($('<option></option>').attr("value", "4").text("$1M+"))
+                            .selectmenu("refresh");
+                    }
+                }
+            });
+            $("#City")
+                  .selectmenu()
+                  .selectmenu("menuWidget")
+                  .addClass("overflow");
+
+            $('#carousel').carouFredSel({
+                width: "100%",
+                height: '100%',
+                items: {
+                    visible: {
+                        min: 1,
+                        max: 4
+                    }
+                },
+                auto: {
+                    play: "true",
+                    easing: "linear",
+                    timeoutDuration: 5000,
+                    pauseOnHover: "immediate"
+                },
+                scroll: { items: 1 },
+                prev: '.prev',
+                next: '.next'
+            });
+        });
+    </script>
+
+    <!-- Google Analytics -->
+</body>
+</html>

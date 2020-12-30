@@ -1,0 +1,191 @@
+﻿@model TKS.Areas.Admin.Models.SEOViewModel
+
+@{
+}
+
+    <div class="ym-form ym-columnar">
+        <form id="frmSEO" method="post" action="@ViewBag.PostURL">
+            <div class="ym-form ym-columnar">
+                <div class="ym-fbox">
+                    <label for="MetaTitle">Page Title</label>
+                    <input type="text" value="@Model.MetaTitle" id="MetaTitle" name="MetaTitle" maxlength="60" />
+                </div>
+                <div class="counter2">Recommended maximum length is 60 characters</div>
+                <div class="ym-fbox">
+                    <label for="MetaDescription">Page Description</label>
+                    <textarea id="MetaDescription" name="MetaDescription" rows="3">@Model.MetaDescription</textarea>
+                </div>
+                <div class="counter2">Recommended maximum length is 155 characters</div>
+                <div class="ym-fbox">
+                    <label for="MetaKeywords">Page Keywords</label>
+                    <textarea id="MetaKeywords" name="MetaKeywords" rows="3">@Model.MetaKeywords</textarea>
+                </div>
+                <div class="counter2">Included for completeness, generally should not be used</div>
+
+                <hr />
+                <h3>Open Graph Tags</h3>
+                <div class="ym-fbox">
+                    <label for="ogTitle">og:Title</label>
+                    <input type="text" value="@Model.ogTitle" id="ogTitle" name="ogTitle" maxlength="95" />
+                </div>
+                <div class="counter2">95 characters maximum</div>
+                <div class="ym-fbox">
+                    <label for="ogDescription">og:Description</label>
+                    <textarea id="ogDescription" name="ogDescription" rows="3">@Model.ogDescription</textarea>
+                </div>
+                <div class="counter2">Recommended maximum length is 300 characters</div>
+                <div class="ym-fbox">
+                    <label for="ogType">og:Type</label>
+                    @Html.DropDownList("TypeOG")
+                </div>
+                <div class="ym-fbox">
+                    <label for="fbAdmin">fb:Admin</label>
+                    <input type="text" value="@Model.fbAdmin" id="fbAdmin" name="fbAdmin" disabled="disabled">
+                </div>
+                <div class="ym-fbox">
+                    <label for="ogImage">og:Image</label>
+                    <input type="text" value="@Model.ogImage" id="ogImage" name="ogImage" class="ym-inline" style="width:300px;margin-top:3px" />
+                    <button id="cmdOgImage" class="ym-button ym-small">Browse Server</button>
+                    <div id="roxyCustomPanel" style="display: none;">
+                        <iframe id="roxyFrame" style="width:100%;height:100%" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="counter2">
+                    Size should be 300 x 300px
+                    <asp:Placeholder ID="plPreviewogImage" runat="server" Visible="false">| <asp:HyperLink ID="hlPreviewogImage" Text="Preview" Target="_blank" runat="server" /></asp:Placeholder>
+                </div>
+
+                <hr />
+                <h3>Google+ Tags</h3>
+                <div class="ym-fbox">
+                    <label for="gName">Name</label>
+                    <input type="text" value="@Model.gName" id="gName" name="gName" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="gDescription">Description</label>
+                    <textarea id="gDescription" name="gDescription" rows="3">@Model.gDescription</textarea>
+                </div>
+                <div class="counter2">Recommended maximum length is 200 characters</div>
+                <div class="ym-fbox">
+                    <label for="gImage">Image</label>
+                    <input type="text" value="@Model.gImage" id="gImage" name="gImage" class="ym-inline" style="width:300px;margin-top:3px" />
+                    <button id="cmdGPlus" class="ym-button ym-small">Browse Server</button>
+                </div>
+                <p class="counter2">
+                    Height must be at least 120px. If the width is less than 100px, the aspect ratio must be no greater than 3.0.
+                    <asp:Placeholder ID="plPreviewgImage" runat="server" Visible="false">| <asp:HyperLink ID="hlPreviewgImage" Text="Preview" Target="_blank" runat="server" /></asp:Placeholder>
+                </p>
+
+                <hr />
+                <h3>Google Authorship</h3>
+                <div class="ym-fbox">
+                    <label for="gAuthor">Author</label>
+                    <input type="text" value="@Model.gAuthor" id="gAuthor" name="gAuthor" disabled="disabled">
+                </div>
+                <div class="ym-fbox">
+                    <label for="gPublisher">Publisher</label>
+                    <input type="text" value="@Model.gPublisher" id="gPublisher" name="gPublisher" disabled="disabled">
+                </div>
+
+                <hr />
+                <h3>Twitter Card Tags</h3>
+                <div class="ym-fbox">
+                    <label for="twitterTitle">twitter:Title</label>
+                    <input type="text" value="@Model.twitterTitle" id="twitterTitle" name="twitterTitle" maxlength="70" />
+                </div>
+                <div class="counter2">70 characters maximum</div>
+                <div class="ym-fbox">
+                    <label for="twitterDescription">twitter:Description</label>
+                    <textarea id="twitterDescription" name="twitterDescription" rows="3">@Model.twitterDescription</textarea>
+                </div>
+                <div class="counter2">200 characters maximum</div>
+                <div class="ym-fbox">
+                    <label id="lbltwitterCard">twitter:Card</label>
+                    <input type="text" value="summary" id="twitterCard" name="twitterCard" disabled="disabled" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="twitterCreator">twitter:Creator</label>
+                    <input type="text" value="@Model.twitterCreator" id="twitterCreator" name="twitterCreator" disabled="disabled" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="twitterImage">twitter:Image</label>
+                    <input type="text" value="@Model.twitterImage" id="twitterImage" name="twitterImage" class="ym-inline" style="width:300px;margin-top:3px" />
+                    <button id="cmdTwitter" class="ym-button ym-small">Browse Server</button>
+                </div>
+                <div class="counter2">
+                    Size should be 120 x 120px and must be less than 1MB
+                    <asp:Placeholder ID="plPreviewtwitterImage" runat="server" Visible="false">| <asp:HyperLink ID="hlPreviewtwitterImage" Text="Preview" Target="_blank" runat="server" /></asp:Placeholder>
+                </div>
+
+                <div class="ym-fbox">
+                    <button class="ym-primary">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+<script src="/js/libs/jquery.charactercounter.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#MetaTitle").characterCounter({ limit: '60', counterFormat: 'Characters remaining: %1' });
+        $("#MetaDescription").characterCounter({ limit: '155', counterFormat: 'Characters remaining: %1' });
+        $("#ogTitle").characterCounter({ limit: '95', counterFormat: 'Characters remaining: %1' });
+        $("#ogDescription").characterCounter({ limit: '300', counterFormat: 'Characters remaining: %1' });
+        //$("#gName").characterCounter({ limit: '200', counterFormat: 'Characters remaining: %1' });
+        $("#gDescription").characterCounter({ limit: '200', counterFormat: 'Characters remaining: %1' });
+        $("#twitterTitle").characterCounter({ limit: '70', counterFormat: 'Characters remaining: %1' });
+        $("#twitterDescription").characterCounter({ limit: '200', counterFormat: 'Characters remaining: %1' });
+
+        @* Setup form validation *@
+        $("#frmSEO").validate({ submitHandler: function (form) { SaveChanges(); } });
+
+        $("#cmdOgImage").click(function (event) {
+            event.preventDefault();
+            $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=ogImage&selected=/assets/images/og/fake.ext')
+            $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+        });
+        $("#cmdGPlus").click(function (event) {
+            event.preventDefault();
+            $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=gImage&selected=/assets/images/gplus/fake.ext')
+            $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+        });
+        $("#cmdTwitter").click(function (event) {
+            event.preventDefault();
+            $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=twitterImage&selected=/assets/images/twitter/fake.ext')
+            $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+        });
+
+        function SaveChanges() {
+            $("#frmSEO").validate();
+            if ($("#frmSEO").valid()) {
+                var Data = {};
+                Data.EntityID = '@Model.EntityID';
+                Data.MetaTitle = $('#MetaTitle').val();
+                Data.MetaDescription = $('#MetaDescription').val();
+                Data.MetaKeywords = $('#MetaKeywords').val();
+                Data.ogTitle = $('#ogTitle').val();
+                Data.ogDescription = $('#ogDescription').val();
+                Data.ogType = $('#ogType').val();
+                Data.ogImage = $('#ogImage').val();
+                Data.gName = $('#gName').val();
+                Data.gDescription = $('#gDescription').val();
+                Data.gImage = $('#gImage').val();
+                Data.twitterTitle = $('#twitterTitle').val();
+                Data.twitterDescription = $('#twitterDescription').val();
+                Data.twitterImage = $('#twitterImage').val();
+
+                $.ajax({
+                    @*url: '@Url.Action("UpdateSEO", "Blog")',*@
+                    url: '@ViewBag.PostURL',
+                    async: false, type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(Data),
+                    success: function () {
+                        $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                        setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        }
+    });
+</script>

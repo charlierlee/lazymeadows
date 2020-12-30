@@ -1,0 +1,57 @@
+﻿@model IEnumerable<TKS.Models.OrderViewModel>
+
+
+
+    <div class="box">
+        <h1>Update Email Address</h1>
+    </div>
+<form action="/myaccount/email" method="post" id="frm" class="ym-form ym-columnar">
+    <p><b>Your current email address:</b> &nbsp;&nbsp;&nbsp;@ViewBag.Email</p>
+    <div class="ym-fbox">
+        <label for="Email" class="ym-required">New Email Address</label>
+        <input name="email" type="email" id="email" data-rule-required="true" data-rule-email="true" />
+    </div>
+    <div class="ym-fbox">
+        <label for="emailconfirm" class="ym-required">Confirm New Email Address</label>
+        <input name="emailconfirm" type="email" id="emailconfirm" data-rule-required="true" data-rule-email="true" data-rule-equalto="#email" />
+    </div>
+    <div class="ym-fbox-button">
+        <input type="submit" name="cmdUpdate" value="Change Email Address" id="cmdUpdate" />
+    </div>
+</form>
+
+
+@section cphSidebar {
+    <aside class="sidebar">
+    <div class="my-account">
+        <h2>My Account</h2>
+        <div class="holder">
+            <div class="pads">
+                <ul>
+                    <li><a href="/myaccount">Order History</a></li>
+                    <li><a href="/myaccount/email">E-Mail Address</a></li>
+                    <li><a href="/myaccount/password">Password</a></li>
+                    <li><a href="/myaccount/address">Address Book</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    @{ Html.RenderAction("GetCategorySideMenu", "Service");  }
+    @{ Html.RenderAction("GetRecentlyViewed", "Service");  }
+</aside>
+}
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $("#cat-accordion").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false
+            });
+
+            $("#frm").validate();
+        });
+    </script>
+    @Html.Raw(ViewData["Scripts"])
+}

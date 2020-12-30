@@ -1,0 +1,121 @@
+﻿@model IEnumerable<TKS.Models.realestate.Sold>
+@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+
+<div class="social-logo"><a href="/social"><img src="/assets/images/sullivan-buzz.png" width="287" height="106" alt="The Sullivan Buzz - The Lowdown on a Town" /></a></div>
+<h2 style="text-align: justify;">Follow Us On:</h2>
+<h2>&nbsp;<a href="https://instagram.com/lazymeadowsrealty/" style="line-height: 20.8px;"><img alt="" src="/assets/images/Instagram.png" style="width: 40px; height: 40px;" /></a>&nbsp;&nbsp;<a href="https://www.facebook.com/lazymeadowsrealty"><img alt="" src="/assets/images/Facebook.png" style="width: 40px; height: 40px;" /></a></h2>
+<p>&nbsp;</p>
+<h1>Sold Properties</h1>
+<p>&nbsp;</p>
+
+<ul class="sold-list">
+@foreach(var p in Model) {
+	<li>
+        <img alt="" height="220" src="/assets/images/sold/@p.Serial.ToString()/@p.Thumbnail" width="325" />
+	    <div>
+            @Html.Raw(p.Content)
+	        <p>
+                @if (!string.IsNullOrEmpty(p.Exterior)) {
+                <a class="fancybox" data-fancybox-group="prop-@p.Serial.ToString()" href="/assets/images/sold/@p.Serial.ToString()/@p.Exterior">Click to expand exterior</a>
+                }
+                @if (!string.IsNullOrEmpty(p.Exterior) && !string.IsNullOrEmpty(p.Interior)) {
+                <span>&bull;</span>
+                }
+                @if (!string.IsNullOrEmpty(p.Interior)) {
+                <a class="fancybox" data-fancybox-group="prop-@p.Serial.ToString()" href="/assets/images/sold/@p.Serial.ToString()/@p.Interior">Click to view interior</a>
+                }
+            </p>
+	    </div>
+	</li>
+}
+</ul>
+
+
+@section cphTeaser {
+<form id="search" method="get" action="/search" class="minibar">
+    <ul class="searchbar list-unstyled ym-clearfix">
+        <li>
+            <select name="type" id="type">
+                <option value="1">Residential</option>
+                <option value="2">Land</option>
+                <option value="3">Commercial</option>
+            </select>
+        </li>
+        <li>
+            @Html.DropDownList("City", "All Towns")
+        </li>
+        <li>
+            <select name="pricerange" id="pricerange">
+                <option value="0">Any Price</option>
+                <option value="1">$0 - 200k</option>
+                <option selected="selected" value="2">$200k - 500k</option>
+                <option value="3">$500k - 1M</option>
+                <option value="4">$1M+</option>
+            </select>
+        </li>
+        <li>
+            <select name="acrerange" id="acrerange">
+                <option value="0">Any Acreage</option>
+                <option value="1">1-5 Acres</option>
+                <option value="2">5-10 Acres</option>
+                <option value="3">10-20 Acres</option>
+                <option value="4">20+ Acres</option>
+            </select>
+        </li>
+        <li>
+            <button id="listing" name="listing" value="1">Listings</button>
+            <button id="mapit" name="mapit" value="1">Map</button>
+        </li>
+    </ul>
+</form>
+}
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $("#pricerange, #acrerange").selectmenu();
+            $("#type").selectmenu({
+                change: function (event, ui) {
+                    var type = $(this).val();
+                    if (type == '1') {
+                        $("#search").attr("action", "/search");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 200k"))
+                            .append($('<option></option>').attr("value", "2").text("$200k - 500k"))
+                            .append($('<option></option>').attr("value", "3").text("$500k - 1M"))
+                            .append($('<option></option>').attr("value", "4").text("$1M+"))
+                            .selectmenu("refresh");
+                    } else if (type == '2') {
+                        $("#search").attr("action", "/searchland");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 50k"))
+                            .append($('<option></option>').attr("value", "2").text("$50k - 100k"))
+                            .append($('<option></option>').attr("value", "3").text("$100k - 175k"))
+                            .append($('<option></option>').attr("value", "4").text("$175k+"))
+                            .selectmenu("refresh");
+                    } else if (type == '3') {
+                        $("#search").attr("action", "/searchcomm");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 200k"))
+                            .append($('<option></option>').attr("value", "2").text("$200k - 500k"))
+                            .append($('<option></option>').attr("value", "3").text("$500k - 1M"))
+                            .append($('<option></option>').attr("value", "4").text("$1M+"))
+                            .selectmenu("refresh");
+                    }
+                }
+            });
+            $("#City")
+                  .selectmenu()
+                  .selectmenu("menuWidget")
+                  .addClass("overflow");
+            $('img[usemap]').rwdImageMaps();
+            @Html.Raw(ViewData["FooterCode"])
+        });
+    </script>
+    @Html.Raw(ViewData["Scripts"])
+}

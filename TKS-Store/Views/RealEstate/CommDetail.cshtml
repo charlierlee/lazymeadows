@@ -1,0 +1,291 @@
+﻿@model TKS.Models.realestate.ListingResult3
+@{
+	TKS.Models.realestate.MLSListing listing = Model.listing;
+	List<TKS.Models.realestate.MLSListing> listings = Model.searchResult.Listings;
+	string address = Server.UrlEncode(listing.UnparsedAddress);
+	string address1line = listing.AddressStreet.Trim() + ", ";
+    if (listing.UnitNumber.Length > 0) { address1line += listing.UnitNumber + ", "; }
+	address1line += listing.City + " NY " + listing.PostalCode;
+}
+
+
+@Html.Raw(ViewData["Body"])
+<div class="details">
+	<div class="flexslider">
+		<ul class="slides">
+			@foreach (string path in listing.Images) {
+				<li><img src="@path?height=330&width=440&mode=crop&scale=both" style="width:440px;height:330px" alt="" class="fancybox" data-fancybox-href="@path" data-fancybox-group="listing" /></li>
+			}
+		</ul>
+	</div>
+	<div class="ym-column linearize-level-1 equalize">
+		<div id="content" class="ym-col1">
+			<div class="ym-gbox">
+				<div class="ym-grid linearize-level-2">
+					<div class="ym-g50 ym-gl">
+						<div class="ym-gbox">
+							<h1>@address1line</h1>
+						</div>
+					</div>
+					<div class="ym-g50 ym-gr">
+                        <h2>@listing.AskingAmt.ToString("#,###")</h2>
+					</div>
+				</div>
+				<div class="contact">
+					<h2>Interested? Call (845) 707-5274, <a href="mailto:homes@lazymeadowsrealty.com">email us</a>, or <a href="#agent">use our form</a></h2>
+				</div>
+				<div>
+					<p class="content">@listing.SyndicationRemarks</p>
+                    @if(listing.AccessibilityFeatures.Length > 0) { <p class="content">@listing.AccessibilityFeatures</p> }
+                    @if(listing.Inclusions.Length > 0) { <p class="content">Included: @listing.Inclusions</p> }
+                    @if(listing.Directions.Length > 0) { <p class="content">@listing.Directions</p> }
+                    @if(listing.VirtualTourURLUnbranded.Length > 0) { <p class="content"><a href="@listing.VirtualTourURLUnbranded" target="_blank">Click for Virtual Tour</a></p> }
+                    @if(listing.VirtualTourURLBranded.Length > 0) { <p class="content"><a href="@listing.VirtualTourURLBranded" target="_blank">Click for Virtual Tour</a></p> }
+                    @if(listing.ONEKEY_VideoTourURL.Length > 0) { <p class="content"><a href="@listing.ONEKEY_VideoTourURL" target="_blank">Click for Virtual Tour</a></p> }
+				</div>
+				<div class="sep">
+					<div class="leftline"></div>
+					<div class="rightline"></div>
+				</div>
+				<div class="ym-grid linearize-level-1">
+					<div class="ym-g40 ym-gl">
+						<div class="ym-gbox">
+							<h4>General Information:</h4>
+							<p><span class="labels">MLS#:</span><span class="values"> @listing.MLS</span></p>
+							<p><span class="labels">Sq ft:</span><span class="values"> @((listing.ONEKEY_BuildingSize + "").Length > 0 ? string.Format("{0:n0}", Convert.ToDouble(listing.ONEKEY_BuildingSize)) : "")</span></p>
+							<p><span class="labels">Lot:</span><span class="values"> @((listing.LotSizeAcres + "").Length > 0 ? string.Format("{0:n2}", Convert.ToDouble(listing.LotSizeAcres)) + " acres" : "")</span></p>
+							@if (listing.YearBuilt > -1) {<p><span class="labels">Year Built:</span><span class="values"> @listing.YearBuilt</span></p>}
+							<p><span class="labels">Type:</span><span class="values"> @(listing.BusinessType != listing.PropertySubType ? listing.BusinessType : "") @listing.PropertySubType</span></p>
+							<p><span class="labels">Zoning:</span><span class="values"> @listing.ZoningDescription</span></p>
+							@*<p><span class="labels">Condition:</span><span class="values"> @listing.Condition</span></p>*@
+							@*<p><span class="labels">Possession Date:</span><span class="values"> @listing.PossessionDate</span></p>*@
+						</div>
+					</div>
+					<div class="ym-g60 ym-gr">
+						<div class="ym-gbox">
+							<div class="bg">
+								<div class="ym-grid linearize-level-2">
+									<div class="ym-g33 ym-gl"><span class="ym-label">Price:</span></div>
+									<div class="ym-g66 ym-gr">@listing.AskingAmt.ToString("#,###")</div>
+								</div>
+								<div class="ym-grid linearize-level-2">
+									<div class="ym-g33 ym-gl"><span class="ym-label">Down Payment:</span></div>
+									<div class="ym-g33 ym-gl">
+										<div class="ym-fbox">
+											<input class="short" type="text" name="downpaymenttextfield" id="downpaymenttextfieldid" value="@listing.DownpaymentPercent" />%
+										</div>
+									</div>
+									<div class="ym-g33 ym-gl"><label for="downpaymenttextfieldid"><span class="padleft">@listing.Downpayment</span></label></div>
+								</div>
+								<div class="ym-grid linearize-level-2">
+									<div class="ym-g33 ym-gl"><label for="thirtyyears">30 Year Fixed</label></div>
+									<div class="ym-g33 ym-gl">
+										<div class="ym-fbox">
+											<input class="short" type="text" name="thirtyyearstextfield" id="thirtyyearstextfieldid" value="@listing.Percent30yr" />%
+										</div>
+									</div>
+									<div class="ym-g33 ym-gl"><label for="thirtyyearstextfieldid"><span class="padleft">@listing.Payment30yr/mo</span></label></div>
+								</div>
+								<div class="ym-grid linearize-level-2">
+									<div class="ym-g33 ym-gl"><label for="fifteenyears">15 Year Fixed</label></div>
+									<div class="ym-g33 ym-gl">
+										<div class="ym-fbox">
+											<input class="short" type="text" name="fifteenyearstextfield" id="fifteenyearstextfieldid" value="@listing.Percent15yr" />%
+										</div>
+									</div>
+									<div class="ym-g33 ym-gl"><label for="fifteenyearstextfieldid"><span class="padleft">@listing.Payment15yr/mo</span></label></div>
+								</div>
+								<div class="ym-grid linearize-level-2">
+									<div class="ym-g33 ym-gl"><label for="arm">5/1 ARM</label></div>
+									<div class="ym-g33 ym-gl">
+										<div class="ym-fbox">
+											<input class="short" type="text" name="armtextfield" id="armtextfieldid" value="@listing.PercentARM" />%
+										</div>
+									</div>
+									<div class="ym-g33 ym-gl"><label for="armtextfieldid"><span class="padleft">@listing.PaymentARM/mo</span></label></div>
+								</div>
+							</div>
+							<div style="margin-top:1.5em">
+								<div class="ym-grid linearize-level-1">
+									<div class="ym-g50 ym-gl"><div class="ym-gbox-left"><a class="fancybox.iframe map" href="http://maps.google.com/maps?f=q&hl=en&q=@address&ie=UTF8&hq=&hnear=@address&t=h&z=14&output=embed"><img src="/img/map_this_property.png" alt="Map this property" style="max-width:307px;margin:1em auto 1em" height="66" class="img-responsive" /></a></div></div>
+									<div class="ym-g50 ym-gr"><div class="ym-gbox-right"><a href="/social"><img src="/assets/images/sullivan-buzz.png" style="max-width:287px;margin:0 auto" height="106" alt="The Sullivan Buzz - The Lowdown on a Town" class="img-responsive" /></a></div></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="ym-grid rowmargin">
+					<h4 class="lessmargin">More information</h4>
+					<p class="content">@listing.ONEKEY_ImprovementRemarks</p>
+					<div class="ym-g33 ym-gl">
+						<div class="ym-gbox">
+							<p><span class="labels">Appliances:</span><span class="values"> @listing.Appliances</span></p>
+							<p><span class="labels">Construction:</span><span class="values"> @listing.ConstructionMaterials</span></p>
+							<p><span class="labels">Siding:</span><span class="values"> @listing.ExteriorFeatures</span></p>
+							<p><span class="labels">Security:</span><span class="values"> @listing.SecurityFeatures</span></p>
+					        <p class="content">@listing.ONEKEY_LocationDescription</p>
+						</div>
+					</div>
+					<div class="ym-g33 ym-gl">
+						<div class="ym-gbox-center">
+							<p><span class="labels">Utilities:</span><span class="values"> @listing.Utilities</span></p>
+                            <p><span class="labels">Water:</span><span class="values"> @listing.WaterSource</span></p>
+							<p><span class="labels">Water Heater:</span><span class="values"> @listing.ONEKEY_HotWater</span></p>
+							<p><span class="labels">Sewer:</span><span class="values"> @listing.Sewer</span></p>
+                            <p><span class="labels">Heating:</span><span class="values"> @listing.Heating</span></p>
+                            <p><span class="labels">Heating Zones:</span><span class="values"> @listing.ONEKEY_NumberofHeatingZones</span></p>
+                            <p><span class="labels">Air Conditioning:</span><span class="values"> @listing.Cooling</span></p>
+							<p><span class="labels">Garbage:</span><span class="values"> @listing.ONEKEY_GarbageRemoval</span></p>
+                        </div>
+					</div>
+					<div class="ym-g33 ym-gr">
+						<div class="ym-gbox">
+                            <p><span class="labels">Parking:</span><span class="values"> @listing.ParkingFeatures</span></p>
+						</div>
+					</div>
+				</div>
+				<div class="ym-grid linearize-level-1 rowmargin">
+					<h4 class="lessmargin">Tax and Fee Information</h4>
+					<div class="ym-g33 ym-gl">
+						<div class="ym-gbox">
+                            <p><span class="labels">Tax Amount:</span><span class="values"> @(listing.TaxAnnualAmount != "0" ? String.Format("{0:C0}", Convert.ToDecimal(listing.TaxAnnualAmount)) : "")</span></p>
+                            <p><span class="labels">Tax Assessed Value:</span><span class="values"> @(listing.TaxAssessedValue != "0" ? String.Format("{0:C0}", Convert.ToDecimal(listing.TaxAssessedValue)) : "")</span></p>
+						</div>
+					</div>
+					<div class="ym-g33 ym-gl">
+						<div class="ym-gbox-center">
+						</div>
+					</div>
+					<div class="ym-g33 ym-gr">
+						<div class="ym-gbox">
+                            <div>@listing.ONEKEY_DevelopmentName</div>
+							<div>@listing.AddressStreet</div>
+                            @if (listing.UnitNumber.Length > 0) { <div>@listing.UnitNumber</div> }
+							<div>@listing.City, NY @listing.PostalCode</div>
+							<div>@listing.HighSchoolDistrict School District</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="agent" class="agent">
+				<div class="agentbox">
+					<h1>Contact Our Agent</h1>
+					<div class="contactdetails" style="background-size:cover">
+						<div class="ym-grid linearize-level-2">
+							<div class="ym-g40 ym-gl">
+								<div class="ym-gbox">
+									@if (listing.ListAgentFullName.ToLower().Contains("miszuk")) {
+										<img class="img-responsive" src="/img/miszuk.jpg" style="width:200px;height:220px" alt="Peter Miszuk" />
+									} else {
+										<img class="img-responsive" src="/img/agent.jpg" style="width:200px;height:220px" alt="Charles Petersheim" />
+									}
+								</div>
+							</div>
+							<div class="ym-g60 ym-gr">
+								<div class="ym-gbox">
+									<form id="frm" action="/contact/docontact" method="post" class="ym-form ym-full">
+										<div class="ym-fbox"><input class="long" type="text" name="name" id="name" placeholder="Name" data-rule-required="true" /></div>
+										<div class="ym-fbox"><input class="long" type="text" name="email" id="email" placeholder="Email" data-rule-required="true" data-rule-email="true" /></div>
+										<div class="ym-fbox"><input class="long" type="text" name="phone" id="phone" placeholder="Phone Number" /></div>
+										<div class="ym-fbox"><textarea class="long" name="comments" id="comments" rows="5" placeholder="Enter your message" data-rule-required="true"></textarea></div>
+                                        @if (TKS.Areas.Admin.Models.Global.reCAPTCHASiteKey.Length > 0) {
+                                        <div style="margin:1em 0 1em 12px"><div class="g-recaptcha" data-sitekey="@TKS.Areas.Admin.Models.Global.reCAPTCHASiteKey"></div></div>
+                                        }
+										<div class="ym-fbox-button"><button type="submit" id="submit">Request Info</button></div>
+                                        <div style="color:#f00;font-weight:bold">@ViewBag.Message</div>
+										<input type="hidden" name="referrer" id="referrer" value="@Request.Url" />
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="center" style="margin-top:2em">
+						Listing courtesy of @listing.ListAgentFullName<br />
+						©@DateTime.Now.Year.ToString() Sullivan County Multiple Listing Service (SCMLS). The data relating to real estate for sale on this website comes from Multiple Listing Service of The Sullivan County Board of Realtors and the Broker Reciprocity Program. Information deemed reliable but not guaranteed. Real estate listings held by brokerage firms other than Lazy Meadows Realty, Inc. includes the name of the listing brokers. Listing broker has attempted to offer accurate data, but buyers are advised to confirm all items. Information last updated on @DateTime.Now.ToShortDateString().
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="sidebar" class="ym-col3">
+			<div class="ym-gbox equalize">
+				<div class="othersearches">
+					<a href="/search">Search for a House</a>
+					<a href="/searchland">Search for Land</a>
+				</div>
+				<ul class="properties list-unstyled">
+					@foreach (var item in listings) {
+						<li>
+							<div class="item">
+								@if (item.Images.Count > 0) {
+									<a href="/commdetail?mls=@item.MLS@ViewBag.Params"><img src="@item.Images[0]?width=261" alt="" class="img-responsive" /></a>
+								}
+								<div class="text">
+									<div class="heading ym-clearfix">
+										<div class="left">@item.City</div>
+										<div class="right">@item.AskingAmt.ToString("#,###")</div>
+									</div>
+									<p>@item.ShortDescription(150)...</p>
+									<a href="/commdetail?mls=@item.MLS@ViewBag.Params" class="view">View Property</a>
+								</div>
+							</div>
+						</li>
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+
+</div>
+@section CSS {
+	<link href="~/css/flexslider.css" rel="stylesheet" />
+}
+
+@section cphTeaser {
+	<a href="@ViewBag.SearchAgainURL" class="back">Search Again</a>
+}
+
+@section cphFoot {
+	<script src="~/js/libs/jquery.flexslider.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		$(window).load(function () {
+			$('.flexslider').flexslider({
+				animation: "slide",
+				touch: true,
+				itemWidth: 440,
+				itemMargin: 0,
+				controlNav: false
+			});
+		});
+	</script>
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$(".flexslider img").fancybox({
+				fitToView: true,
+				autoSize: true
+			});
+			$(".map").fancybox({
+				maxWidth: 800,
+				maxHeight: 600,
+				fitToView: false,
+				width: '70%',
+				height: '70%',
+				autoSize: false,
+				closeClick: false,
+				openEffect: 'none',
+				closeEffect: 'none'
+			});
+			$("#frm").validate();
+		});
+	</script>
+	<script type='text/javascript'>
+		$(function () {
+			@Html.Raw(ViewData["FooterCode"])
+		});
+	</script>
+    @if (TKS.Areas.Admin.Models.Global.reCAPTCHASiteKey.Length > 0) {
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    }
+	@Html.Raw(ViewData["Scripts"])
+}

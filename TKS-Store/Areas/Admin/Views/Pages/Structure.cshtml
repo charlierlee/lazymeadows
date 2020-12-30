@@ -1,0 +1,70 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ContentPageViewModel
+
+    <form id="frmSructure" method="post" action="~/admin/pages/structure/@Model.PageID">
+        <div class="ym-form ym-columnar">
+            <div class="ym-fbox">
+                <label for="VirtualPath" class="ym-required">Virtual Path</label>
+                <input type="text" value="@Model.VirtualPath" name="VirtualPath" id="VirtualPath" data-rule-required="true" />
+            </div>
+            <div class="ym-fbox">
+                <label for="PageTypeID" class="ym-required">Page Type</label>
+                @Html.DropDownList("PageTypeID", ViewBag.PageTypeID as SelectList, "Please Select", new { data_rule_required = "true" })
+            </div>
+            <div class="ym-fbox">
+                <label for="Locale" class="ym-required">Locale</label>
+                @Html.DropDownList("Locale", ViewBag.Locale as SelectList, new { data_rule_required = "true" })
+            </div>
+            <div class="ym-fbox-check">
+                @Html.CheckBoxFor(model => model.IncludeInSitemap)
+                <label for="IncludeInSitemap">Include In Sitemap</label>
+            </div>
+            <div class="ym-grid">
+                <div class="ym-g50 ym-gl">
+                    <button id="cmdSave" class="ym-primary">Save</button>
+                </div>
+                <div class="ym-g50 ym-gr" style="text-align: right">
+                    <button class="btn icon-red" id="cmdDelete"><span class="el el-trash-alt el-fw el-lg"></span>Delete</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+    $(function () {
+        @* Setup form validation *@
+        $("#frmSructure").validate({ submitHandler: function (form) { SaveChanges(); } });
+
+        function SaveChanges() {
+            var Data = {};
+            Data.VirtualPath = $('#VirtualPath').val();
+            Data.PageTypeID = $('#PageTypeID').val();
+            Data.Locale = $('#Locale').val();
+            Data.IncludeInSitemap = $('#IncludeInSitemap').is(':checked') ? true : false;
+
+            $.ajax({
+                url: "/admin/pages/structure/@Model.PageID",
+                async: false, type: "POST",
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(Data),
+                success: function () {
+                    $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                    setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                },
+                error: function (e) { alert(e.status + ": " + e.statusText); }
+            });
+        }
+        $("#cmdDelete").click(function (ev) {
+            ev.preventDefault();
+
+            if (confirm("Are you sure you want to delete this page?")) {
+                $.ajax({
+                    url: "/admin/pages/delete/@Model.PageID",
+                    async: false, type: "POST",
+                    dataType: "json", contentType: "application/json; charset=utf-8",
+                    success: function (msg) { location.href = "/admin/pages"; },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        });
+    });
+</script>

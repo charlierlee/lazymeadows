@@ -1,0 +1,93 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+
+<div class="social-logo"><a href="/social"><img src="/assets/images/sullivan-buzz.png" width="287" height="106" alt="The Sullivan Buzz - The Lowdown on a Town" /></a></div>
+@Html.Raw(ViewData["Body"])
+
+@section cphTeaser {
+<form id="search" method="get" action="/search" class="minibar">
+    <ul class="searchbar list-unstyled ym-clearfix">
+        <li>
+            <select name="type" id="type">
+                <option value="1">Residential</option>
+                <option value="2">Land</option>
+                <option value="3">Commercial</option>
+            </select>
+        </li>
+        <li>
+            @Html.DropDownList("City", "All Towns")
+        </li>
+        <li>
+            <select name="pricerange" id="pricerange">
+                <option value="0">Any Price</option>
+                <option value="1">$0 - 200k</option>
+                <option selected="selected" value="2">$200k - 500k</option>
+                <option value="3">$500k - 1M</option>
+                <option value="4">$1M+</option>
+            </select>
+        </li>
+        <li>
+            <select name="acrerange" id="acrerange">
+                <option value="0">Any Acreage</option>
+                <option value="1">1-5 Acres</option>
+                <option value="2">5-10 Acres</option>
+                <option value="3">10-20 Acres</option>
+                <option value="4">20+ Acres</option>
+            </select>
+        </li>
+        <li>
+            <button id="listing" name="listing" value="1">Listings</button>
+            <button id="mapit" name="mapit" value="1">Map</button>
+        </li>
+    </ul>
+</form>
+}
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $("#pricerange, #acrerange").selectmenu();
+            $("#type").selectmenu({
+                change: function (event, ui) {
+                    var type = $(this).val();
+                    if (type == '1') {
+                        $("#search").attr("action", "/search");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 200k"))
+                            .append($('<option></option>').attr("value", "2").text("$200k - 500k"))
+                            .append($('<option></option>').attr("value", "3").text("$500k - 1M"))
+                            .append($('<option></option>').attr("value", "4").text("$1M+"))
+                            .selectmenu("refresh");
+                    } else if (type == '2') {
+                        $("#search").attr("action", "/searchland");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 50k"))
+                            .append($('<option></option>').attr("value", "2").text("$50k - 100k"))
+                            .append($('<option></option>').attr("value", "3").text("$100k - 175k"))
+                            .append($('<option></option>').attr("value", "4").text("$175k+"))
+                            .selectmenu("refresh");
+                    } else if (type == '3') {
+                        $("#search").attr("action", "/searchcomm");
+                        $('#pricerange option:gt(0)').remove();
+                        $("#pricerange")
+                            .append($('<option></option>').attr("value", "1").text("$0 - 200k"))
+                            .append($('<option></option>').attr("value", "2").text("$200k - 500k"))
+                            .append($('<option></option>').attr("value", "3").text("$500k - 1M"))
+                            .append($('<option></option>').attr("value", "4").text("$1M+"))
+                            .selectmenu("refresh");
+                    }
+                }
+            });
+            $("#City")
+                  .selectmenu()
+                  .selectmenu("menuWidget")
+                  .addClass("overflow");
+            $('img[usemap]').rwdImageMaps();
+            @Html.Raw(ViewData["FooterCode"])
+        });
+    </script>
+    @Html.Raw(ViewData["Scripts"])
+}

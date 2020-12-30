@@ -1,0 +1,58 @@
+﻿@model IEnumerable<TKS.Models.Address>
+
+@*<p><span class="el el-plus el-fw green"></span> @Html.ActionLink("Add Address", "AddressCreate", new { id = ViewBag.UserName })</p>*@
+
+<div class="box">
+    <h1>Address Book</h1>
+</div>
+
+@foreach (var address in Model) {
+    <div>
+        <div style="font-weight: bold">@address.NickName</div>
+        <div>@address.FirstName @address.LastName</div>
+        <div>@address.Company</div>
+        <div>@address.Address1</div>
+        <div>@address.Address2</div>
+        <div>@address.Suite</div>
+        <div>@address.City, @address.StateProvinceName @address.ZipPostal</div>
+        <div>@address.CountryName</div>
+        <div>@address.Phone</div>
+        @*<div>
+                <button class="btn icon" title="Edit"><span class="el el-edit el-fw el-lg"></span></button>
+                <button class="btn icon-red" title="Delete"><span class="el el-trash-alt el-fw el-lg"></span></button>
+            </div>*@
+        <hr />
+    </div>
+}
+@section cphSidebar {
+    <aside class="sidebar">
+        <div class="my-account">
+            <h2>My Account</h2>
+            <div class="holder">
+                <div class="pads">
+                    <ul>
+                        <li><a href="/myaccount">Order History</a></li>
+                        <li><a href="/myaccount/email">E-Mail Address</a></li>
+                        <li><a href="/myaccount/password">Password</a></li>
+                        <li><a href="/myaccount/address"><b>Address Book</b></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @{ Html.RenderAction("GetCategorySideMenu", "Service");  }
+        @{ Html.RenderAction("GetRecentlyViewed", "Service");  }
+    </aside>
+}
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $("#cat-accordion").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false
+            });
+
+            $("#frm").validate();
+        });
+    </script>
+}

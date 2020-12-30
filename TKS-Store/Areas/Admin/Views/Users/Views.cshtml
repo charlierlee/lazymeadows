@@ -1,0 +1,34 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.store.RecentlyViewedModel>
+
+
+@if (Model.Count() > 0) {
+    <table id="dataTable" class="tabular tablesorter">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Product</th>
+                <th style="text-align: center;" scope="col">Number of Views</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model) {
+                <tr>
+                    <td style="width: 100px">@item.ViewDate.ToShortDateString()</td>
+                    <td style="width: 100px">
+                        <a href='/p/@item.ProductID/@TKS.Areas.Admin.Models.tksUtil.FormatRouteURL(item.ProductName)'>@item.ProductName</a>
+                    </td>
+                    <td style="width: 100px; text-align: center;">@item.ViewCount</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+} else {
+<p>No product views.</p>
+}
+    <script src="~/js/libs/jquery.tablesorter.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#dataTable").tablesorter();
+        });
+    </script>
+

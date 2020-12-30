@@ -1,0 +1,107 @@
+﻿@model TKS.Areas.Admin.Models.Blog.BlogPost
+
+@{
+}
+
+    <div class="ym-form">
+        <form id="frmComments" method="post" action="/admin/blog/comments">
+            <p style="font-weight:bold">@Model.Title</p>
+            <div class="ym-fbox-check" style="margin-bottom:1em">
+                @Html.EditorFor(model => model.IsCommentEnabled)
+                <label for="IsCommentEnabled">Comments are Enabled</label>
+            </div>
+            <div class="ym-fbox">
+                <button class="ym-primary">Save</button>
+            </div>
+        </form>
+        <hr />
+        <h3 id="comments">Comments</h3>
+
+        @Html.Raw(Model.GetFormattedComments())
+    </div>
+
+<script type="text/javascript">
+    $(function () {
+        @* Setup form validation *@
+        $("#frmComments").validate({ submitHandler: function (form) { SaveChanges(); } });
+
+        function SaveChanges() {
+            $("#frmComments").validate();
+            if ($("#frmComments").valid()) {
+                var Data = {};
+                Data.PostID = '@Model.PostID';
+                Data.IsCommentEnabled = $('#IsCommentEnabled').is(':checked') ? true : false;
+
+                $.ajax({
+                    url: '/admin/blog/comments',
+                    async: false, type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(Data),
+                    success: function () {
+                        $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                        setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        }
+
+        $(".cmdApprove").click(function () {
+            var Data = {};
+            Data.commentid = $(this).data("commentid");
+
+            $.ajax({
+                url: "/admin/blog/commentapprove",
+                async: false, type: "POST",
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(Data),
+                success: function () {
+                    $("#MsgBubble").html("<b>Comment Approved</b>").show();
+                    setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                },
+                error: function (e) { alert(e.status + ": " + e.statusText); }
+            });
+
+            $(this).remove();
+        });
+
+        $(".cmdDelete").click(function () {
+            if (confirm("Are you sure you want to delete this comment?")) {
+                var Data = {};
+                Data.commentid = $(this).data("commentid");
+
+                $.ajax({
+                    url: "/admin/blog/commentdelete",
+                    async: false, type: "POST",
+                    dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(Data),
+                    success: function () {
+                        $("#MsgBubble").html("<b>Comment Deleted</b>").show();
+                        setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+
+                $(this).parent().parent().parent().parent().remove();
+            }
+        });
+
+        $(".cmdUpdate").click(function () {
+            var Data = {};
+            Data.commentid = $(this).data("commentid");
+            Data.comment = $(this).parent().parent().parent().siblings(".ym-gl").children("div").children("textarea").val();
+            //alert(Data.comment);
+            $.ajax({
+                url: "/admin/blog/commentedit",
+                async: false, type: "POST",
+                dataType: "json", contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(Data),
+                success: function () {
+                    $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                    setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                },
+                error: function (e) { alert(e.status + ": " + e.statusText); }
+            });
+        });
+
+    });
+</script>

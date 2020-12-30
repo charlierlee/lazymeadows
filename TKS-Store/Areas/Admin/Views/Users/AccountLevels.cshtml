@@ -1,0 +1,80 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.AccountLevelViewModel>
+
+@{
+    ViewBag.Title = "Manage Account Levels";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosAccounts;
+    ViewBag.NavActive = "user-accounts";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Account Levels</h2>
+    <div class="holder">
+        <div class="inner">
+            <div class="ym-grid">
+                <div class="ym-g50 ym-gl">
+                    <span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New", "CreateAccountLevel")
+                </div>
+                <div class="ym-g50 ym-gr align-right">
+                    <span class="el el-random el-fw el-lg"></span>Drag rows to re-order
+                </div>
+            </div>
+        </div>
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col" style="text-align:right">Discount Percent</th>
+                    <th scope="col" style="text-align:right">Discount Amount</th>
+                    <th scope="col">Free Shipping</th>
+                </tr>
+            </thead>
+            <tbody id="tablebody">
+                @foreach (var item in Model) {
+                    <tr class="rowid" id="rowid_@item.AccountLevelID">
+                        <td style="width:100px">
+                            <a href="/admin/users/EditAccountLevel/@item.AccountLevelID">@item.Name</a>
+                        </td>
+                        <td style="text-align:right">@item.LevelDiscountPercent</td>
+                        <td style="text-align:right">@item.LevelDiscountAmount.ToString("c")</td>
+                        <td>@item.LevelHasFreeShipping</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="inner">
+            <span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New", "CreateAccountLevel")
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $("#tablebody").sortable({
+                items: "tr",
+                cursor: 'move',
+                opacity: 0.8,
+                placeholder: "ui-state-highlight",
+                update: function () { sendOrderToServer(); }
+            });
+
+            function sendOrderToServer() {
+                var order = $("#tablebody").sortable("serialize");
+                $.ajax({
+                    url: "/admin/users/accountlevelreorder",
+                    type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: "{order: '" + order + "'}",
+                    success: function (response) {
+                        if (response == "success") {
+                            $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                            setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                        } else {
+                            alert('An error occurred');
+                        }
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        })
+    </script>
+}

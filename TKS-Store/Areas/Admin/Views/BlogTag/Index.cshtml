@@ -1,0 +1,62 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.Blog.BlogTagViewModel>
+
+@{
+    ViewBag.Title = "Manage Blog Tags";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosBlog;
+    ViewBag.NavActive = "blog-tag";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Blog Tags</h2>
+    <div class="holder ym-form">
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th class="align-right">Posts</th>
+                    <th style="width:20px"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>@item.Tag</td>
+                        <td class="align-right">@item.TagCount</td>
+                        <td>
+                            <button class="btn icon-red cmdDelete" data-tag="@item.Tag"><span class="el el-trash-alt el-fw el-lg"></span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $(".cmdDelete").click(function (event) {
+                event.preventDefault();
+                var Data = {};
+                Data.tag = $(this).data("tag");
+
+                if (confirm("Are you sure you want to delete this blog tag?")) {
+                    $.ajax({
+                        url: "/admin/blogtag/delete",
+                        async: false, type: "POST",
+                        dataType: "json", contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(Data),
+                        success: function () {
+                            $("#MsgBubble").html("<b>Tag Deleted</b>").show();
+                            setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                        },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+
+                    $(this).parent().parent().remove();
+                }
+            });
+
+        });
+    </script>
+}

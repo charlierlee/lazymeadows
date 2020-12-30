@@ -1,0 +1,47 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.CMS.PageSection>
+
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th>Section</th>
+                    <th>Module Type</th>
+                    <th>Name</th>
+                    <th colspan="2" style="text-align:center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pageSection in Model) {
+                    foreach (var pageModule in pageSection.Modules) { 
+                    <tr>
+                        <td>@pageSection.PageSectionName</td>
+                        <td>
+                            @if (@pageModule.Controller == "contentgallery" || @pageModule.Controller == "contentnews" || @pageModule.Controller == "contentslideshow" || @pageModule.Controller == "contentevents") {
+                                @Html.ActionLink(pageModule.ModuleTypeName, "", @pageModule.Controller, new { id = @pageModule.ModuleID }, new { })
+                            } else {
+                                @Html.ActionLink(pageModule.ModuleTypeName, "edit", @pageModule.Controller, new { id = @pageModule.ModuleID }, new { })
+                            }
+                        </td>
+
+                        <td>@pageModule.ModuleName</td>
+                        <td style="text-align:center">
+                            @if (pageModule.ModuleTypeName == "BodyContent") {
+                                <span>@Html.ActionLink("History", "history", @pageModule.Controller, new { id = @pageModule.ModuleID }, new { })</span>
+                            }
+                        </td>
+                        <td style="text-align:center">
+                            @if (pageModule.ModuleTypeName == "BodyContent") {
+                                <span>@Html.ActionLink("Draft", "draft", @pageModule.Controller, new { id = @pageModule.ModuleID }, new { })</span>
+                            }
+                        </td>
+                    </tr>
+                    }
+                }
+            </tbody>
+        </table>
+
+@section cphFoot{
+    <script type="text/javascript">
+    $(function () {
+    });
+    </script>
+}

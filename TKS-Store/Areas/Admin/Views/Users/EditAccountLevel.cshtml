@@ -1,0 +1,130 @@
+﻿@model TKS.Areas.Admin.Models.AccountLevelViewModel
+@{
+    ViewBag.Title = "Edit Account Level - " + @Model.Name;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosAccounts;
+    ViewBag.NavActive = "user-accounts";
+}
+@section cphHeadCSS {
+    <link href="~/Areas/Admin/css/switch/switch.css" rel="stylesheet" />
+}
+
+<div class="container rounded bordered">
+    <h2>Edit Account Level - @Model.Name</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Account Levels", "AccountLevels")
+                &gt;&nbsp;Edit
+            </p>
+            <form id="frm" action="/admin/users/editaccountlevel/@Model.AccountLevelID" method="post">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="Name" class="ym-required">Name</label>
+                        <input type="text" id="Name" name="Name" value="@Model.Name" data-rule-required="true" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="LevelDiscountPercent" class="ym-required">Discount Percent</label>
+                        <input type="text" id="LevelDiscountPercent" name="LevelDiscountPercent" value="@Model.LevelDiscountPercent" data-rule-required="true" data-rule-number="true" data-rule-range="0,100" style="width:75px" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="LevelDiscountAmount" class="ym-required">Discount Amount</label>
+                        <input type="text" id="LevelDiscountAmount" name="LevelDiscountAmount" value="@Model.LevelDiscountAmount.ToString("0.00")" data-rule-required="true" data-rule-number="true" data-rule-min="0" style="width:75px" />
+                    </div>
+                    <div class="ym-grid">
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Free Shipping</label>
+                                <span class="cb-enable @(Model.LevelHasFreeShipping ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelHasFreeShipping ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelHasFreeShipping" name="LevelHasFreeShipping" value="@(Model.LevelHasFreeShipping ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Gets Quantity Discounts</label>
+                                <span class="cb-enable @(Model.LevelAllowsQuantityDiscounts ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelAllowsQuantityDiscounts ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelAllowsQuantityDiscounts" name="LevelAllowsQuantityDiscounts" value="@(Model.LevelAllowsQuantityDiscounts ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gr">
+                            <div class="ym-fbox switch">
+                                <label>No Tax</label>
+                                <span class="cb-enable @(Model.LevelHasNoTax ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelHasNoTax ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelHasNoTax" name="LevelHasNoTax" value="@(Model.LevelHasNoTax ? "true" : "false")" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ym-grid">
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Allows Coupons</label>
+                                <span class="cb-enable @(Model.LevelAllowsCoupons ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelAllowsCoupons ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelAllowsCoupons" name="LevelAllowsCoupons" value="@(Model.LevelAllowsCoupons ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Allow POs</label>
+                                <span class="cb-enable @(Model.LevelAllowsPO ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelAllowsPO ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelAllowsPO" name="LevelAllowsPO" value="@(Model.LevelAllowsPO ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gr">
+                            <div class="ym-fbox switch">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ym-grid">
+                        <div class="ym-g50 ym-gl">
+                            <button class="ym-primary">Save</button>
+                        </div>
+                        <div class="ym-g50 ym-gr" style="text-align: right">
+                            <div style="padding:0 80px 0 0">
+                                @if (Model.AccountLevelID > 2) {
+                                <button class="btn icon-red" id="cmdDelete"><span class="el el-trash-alt el-fw el-lg"></span>Delete</button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+    $(function () {
+        $("#frm").validate();
+
+        @* Setup the Yes/No buttons *@
+        $(".cb-enable").click(function () {
+            $(this).siblings().removeClass('selected');
+            $(this).addClass('selected');
+            $(this).siblings('input').val('true');
+        });
+        $(".cb-disable").click(function () {
+            $(this).siblings().removeClass('selected');
+            $(this).addClass('selected');
+            $(this).siblings('input').val('false');
+        });
+
+        $("#cmdDelete").click(function (event) {
+            event.preventDefault();
+            if (confirm("Are you sure you want to delete this account level?")) {
+                $.ajax({
+                    url: "/admin/users/deleteaccountlevel/@Model.AccountLevelID",
+                    async: false, type: "POST",
+                    dataType: "json", contentType: "application/json; charset=utf-8",
+                    success: function (msg) { location.href = "/admin/users/accountlevels"; },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        });
+    });
+    </script>
+}

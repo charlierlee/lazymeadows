@@ -1,0 +1,61 @@
+﻿@model TKS.Areas.Admin.Models.Blog.BlogPostViewModel
+
+@{
+}
+
+    <div class="ym-form ym-columnar">
+        <form id="frmExtra" method="post" action="/admin/blog/extras">
+            <p style="font-weight:bold">@Model.Title</p>
+            <div class="ym-fbox">
+                <label for="AudioFilename">Audio File</label>
+                <input type="text" value="@Model.AudioFilename" id="AudioFilename" name="AudioFilename" class="ym-inline" style="width:300px;margin-top:3px" />
+                <button id="cmdAudioFilename" class="ym-button ym-small">Browse Server</button>
+                <div id="roxyCustomPanel" style="display: none;">
+                    <iframe id="roxyFrame" style="width:100%;height:100%" frameborder="0"></iframe>
+                </div>
+            </div>
+            <div class="ym-fbox">
+                <label for="VideoPath">Video Link</label>
+                <input type="text" value="@Model.VideoPath" id="VideoPath" name="VideoPath" />
+            </div>
+            <div style="text-align:right;margin-right:80px;font-size:.8em">Should look like http://www.youtube.com/watch?v=eFQN0LUlm-E</div>
+
+            <div class="ym-fbox">
+                <button class="ym-primary">Save</button>
+            </div>
+        </form>
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            @* Setup form validation *@
+            $("#frmExtra").validate({ submitHandler: function (form) { SaveChanges(); } });
+
+            $("#cmdAudioFilename").click(function (event) {
+                event.preventDefault();
+                $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=AudioFilename&selected=/assets/audio/fake.ext')
+                $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+            });
+
+            function SaveChanges() {
+                $("#frmExtra").validate();
+                if ($("#frmExtra").valid()) {
+                    var Data = {};
+                    Data.PostID = '@Model.PostID';
+                    Data.AudioFilename = $('#AudioFilename').val();
+                    Data.VideoPath = $('#VideoPath').val();
+
+                    $.ajax({
+                        url: '/admin/blog/extras',
+                        async: false, type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(Data),
+                        success: function () {
+                            $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                            setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                        },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+                }
+            }
+        });
+    </script>

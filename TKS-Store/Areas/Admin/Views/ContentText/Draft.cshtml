@@ -1,0 +1,57 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ContentTextDraftViewModel
+
+@{
+    ViewBag.Title = "Manage Draft - " + @Model.Locale + " - " + @Model.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+    ViewBag.SelectedTab = 0;
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Draft  - @Model.Locale - @Model.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = Model.PageID }, new { })
+            </p>
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"> <b>Section:</b> @Model.PageSectionName</div>
+                <div class="ym-g33 ym-gl"> <b>Module Type:</b> @Model.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"> <b>Name:</b> @Model.ModuleName</div>
+            </div>
+
+            @using (Html.BeginForm()) {
+                <div style="margin-bottom:1em">
+                    @Html.TextAreaFor(model => model.DraftContents, new { @class = "ckeditor" })
+                </div>
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox-check">
+                        @Html.CheckBoxFor(model => model.MakeLive)
+                        @Html.LabelFor(model => model.MakeLive)
+                    </div>
+                    <div class="ym-fbox-button">
+                        <input type="submit" value="Save" />
+                        @Html.HiddenFor(m => m.ContentID)
+                        @Html.HiddenFor(m => m.ModuleID)
+                        @Html.HiddenFor(m => m.PageID)
+                    </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $(function () {
+            $("#Locale").change(function () {
+                window.location.href = "/admin/ContentText/draft/@Model.ModuleID/" + $("#Locale").val();
+            });
+
+            CKEDITOR.replace('DraftContents');
+        });
+    </script>
+}

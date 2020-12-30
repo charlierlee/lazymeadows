@@ -1,0 +1,32 @@
+﻿@model TKS.Models.CMS.NewsModel
+
+
+@Html.Raw(ViewData["Body"])
+
+    <h1>@Model.Headline</h1>
+    <p class='readmore'><a href='/support/news'>&lt; Back</a></p>
+    <div class='date'>@Model.DateReleased.ToShortDateString()</div>
+    <div class='excerpt'>@Html.Raw(Model.Content)</div>
+
+
+@section cphSidebar {
+    <aside class="sidebar">
+        @{ Html.RenderAction("GetCategorySideMenu", "Service");  }
+        @{ Html.RenderAction("GetRecentlyViewed", "Service");  }
+        <a href="https://app.e2ma.net/app2/audience/signup/1733888/1721486/?v=a" data-fancybox-type="iframe" class="fancybox">.</a>
+    </aside>
+}
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $("#cat-accordion").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false
+            });
+            @Html.Raw(ViewData["FooterCode"])
+        });
+    </script>
+    @Html.Raw(ViewData["Scripts"])
+}

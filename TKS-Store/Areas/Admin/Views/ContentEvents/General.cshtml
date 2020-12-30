@@ -1,0 +1,87 @@
+﻿@model TKS.Areas.Admin.Models.CMS.EventViewModel
+
+    <form id="frm" method="post" action="/admin/contentevents/general/@Model.EventSerial">
+        <div class="ym-form">
+            <div class="ym-columnar">
+                <div class="ym-fbox">
+                    <label for="Headline" class="ym-required">Headline</label>
+                    <input type="text" value="@Model.Headline" id="Headline" name="Headline" data-rule-required="true" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="EventDate" class="ym-required">Event Date</label>
+                    <input type="text" id="EventDate" name="EventDate" value="@Model.EventDate.ToShortDateString()" data-rule-required="true" data-rule-date="true" style="width:100px" maxlength="10" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="EventLocation">Location</label>
+                    <input type="text" value="@Model.EventLocation" id="EventLocation" name="EventLocation" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="IconFileName">
+                        @if (!string.IsNullOrEmpty(Model.IconFileName)) {
+                            <span><a href='@Model.IconFileName' target="_blank" title="Header Image"><span class="el el-picture el-fw el-lg"></span></a></span>
+                        } else {
+                            <span class="btn icon-disabled"><span class="el el-picture el-fw el-lg"></span>&nbsp;</span>
+                        }
+                        Header Image
+                    </label>
+                    <input type="text" value="@Model.IconFileName" id="IconFileName" name="IconFileName" class="ym-inline" style="width:300px;margin-top:3px" />
+                    <button id="cmdHeaderImage" class="ym-button ym-small">Browse Server</button>
+                    <div id="roxyCustomPanel" style="display: none;">
+                        <iframe id="roxyFrame" style="width:100%;height:100%" frameborder="0"></iframe>
+                    </div>
+                </div>
+                <div class="ym-fbox">
+                    <label for="EventLink">
+                        @if (!string.IsNullOrEmpty(Model.EventLink)) {
+                            <span><a href="@Model.EventLink" target="_blank" title="Linked Site"><span class="el el-link el-fw el-lg"></span></a>&nbsp;</span>
+                        } else {
+                            <span class="btn icon-disabled"><span class="el el-link el-fw el-lg"></span>&nbsp;</span>
+                        }
+                        Linked Article
+                    </label>
+                    <input type="url" value="@Model.EventLink" id="EventLink" name="EventLink" data-rule-url="true" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="ShortDescription">Short Description</label>
+                    <textarea id="ShortDescription" name="ShortDescription">@Model.ShortDescription</textarea>
+                </div>
+            </div>
+            <div style="margin:1em 0">
+                <label for="FullDescription">
+                    @if (!string.IsNullOrEmpty(Model.FullDescription)) {
+                        <span><a href='/events/@Model.EventSerial/@TKS.Areas.Admin.Models.tksUtil.FormatRouteURL(Model.Headline)' target="_blank" title="Page"><span class="el el-website el-fw el-lg"></span></a></span>
+                    } else {
+                        <span class="btn icon-disabled"><span class="el el-website el-fw el-lg"></span>&nbsp;</span>
+                    }
+                    Page Content
+                </label>
+                <textarea id="FullDescription" name="FullDescription" rows="3">@Model.FullDescription</textarea>
+            </div>
+            <div class="ym-fbox">
+                <button class="ym-primary">Save</button>
+            </div>
+        </div>
+    </form>
+
+    <script type="text/javascript">
+        CKEDITOR.replace('FullDescription');
+
+        $(function () {
+            $("#frm").validate();
+
+            //if (!Modernizr.inputtypes.date) {
+                $("#EventDate").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showOtherMonths: true,
+                    selectOtherMonths: true
+                });
+            //}
+
+            $("#cmdHeaderImage").click(function (event) {
+                event.preventDefault();
+                $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=IconFileName&selected=/assets/images/events/fake.ext')
+                $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+            });
+        })
+    </script>

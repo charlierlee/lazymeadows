@@ -1,0 +1,13 @@
+﻿@{
+    List<TKS.Models.Blog.BlogTagViewModel> tags = TKS.Models.Blog.BlogPosts.Tags();
+}
+@if (tags.Count > 0) {
+    <div class="section-box">
+        <h2><span class="el-icon-tags icon"></span>Tags</h2>
+        <div style="padding:25px">
+            @foreach (var tag in tags) {
+                <span><a href="/blog/tag/@TKS.Areas.Admin.Models.tksUtil.FormatRouteURL(tag.Tag)" rel="nofollow">@tag.Tag</a>&nbsp;|</span>
+            }
+        </div>
+    </div>
+}

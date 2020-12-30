@@ -1,0 +1,109 @@
+﻿@model TKS.Areas.Admin.Models.AccountLevelViewModel
+@{
+    ViewBag.Title = "Add Account Level";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosAccounts;
+    ViewBag.NavActive = "user-accounts";
+}
+@section cphHeadCSS {
+    <link href="~/Areas/Admin/css/switch/switch.css" rel="stylesheet" />
+}
+
+<div class="container rounded bordered">
+    <h2>Add Account Level</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Account Levels", "AccountLevels")
+                &gt;&nbsp;Create
+            </p>
+            <form id="frm" action="/admin/users/createaccountlevel" method="post">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="Name" class="ym-required">Name</label>
+                        <input type="text" id="Name" name="Name" value="@Model.Name" data-rule-required="true" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="LevelDiscountPercent" class="ym-required">Discount Percent</label>
+                        <input type="text" id="LevelDiscountPercent" name="LevelDiscountPercent" value="@Model.LevelDiscountPercent" data-rule-required="true" data-rule-number="true" data-rule-range="0,100" style="width:75px" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="LevelDiscountAmount" class="ym-required">Discount Amount</label>
+                        <input type="text" id="LevelDiscountAmount" name="LevelDiscountAmount" value="@Model.LevelDiscountAmount" data-rule-required="true" data-rule-number="true" style="width:75px" />
+                    </div>
+                    <div class="ym-grid">
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Free Shipping</label>
+                                <span class="cb-enable @(Model.LevelHasFreeShipping ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelHasFreeShipping ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelHasFreeShipping" name="LevelHasFreeShipping" value="@(Model.LevelHasFreeShipping ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Gets Quantity Discounts</label>
+                                <span class="cb-enable @(Model.LevelAllowsQuantityDiscounts ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelAllowsQuantityDiscounts ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelAllowsQuantityDiscounts" name="LevelAllowsQuantityDiscounts" value="@(Model.LevelAllowsQuantityDiscounts ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gr">
+                            <div class="ym-fbox switch">
+                                <label>No Tax</label>
+                                <span class="cb-enable @(Model.LevelHasNoTax ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelHasNoTax ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelHasNoTax" name="LevelHasNoTax" value="@(Model.LevelHasNoTax ? "true" : "false")" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ym-grid">
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Allows Coupons</label>
+                                <span class="cb-enable @(Model.LevelAllowsCoupons ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelAllowsCoupons ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelAllowsCoupons" name="LevelAllowsCoupons" value="@(Model.LevelAllowsCoupons ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gl">
+                            <div class="ym-fbox switch">
+                                <label>Allow POs</label>
+                                <span class="cb-enable @(Model.LevelAllowsPO ? " selected" : "")"><span>Yes</span></span>
+                                <span class="cb-disable @(!Model.LevelAllowsPO ? " selected" : "")"><span>No</span></span>
+                                <input type="hidden" id="LevelAllowsPO" name="LevelAllowsPO" value="@(Model.LevelAllowsPO ? "true" : "false")" />
+                            </div>
+                        </div>
+                        <div class="ym-g33 ym-gr">
+                            <div class="ym-fbox switch">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ym-fbox-button">
+                        <button id="cmdAdd" class="ym-primary">Add New</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+    $(function () {
+        $("#frm").validate();
+
+        @* Setup the Yes/No buttons *@
+        $(".cb-enable").click(function () {
+            $(this).siblings().removeClass('selected');
+            $(this).addClass('selected');
+            $(this).siblings('input').val('true');
+        });
+        $(".cb-disable").click(function () {
+            $(this).siblings().removeClass('selected');
+            $(this).addClass('selected');
+            $(this).siblings('input').val('false');
+        });
+
+    });
+    </script>
+}

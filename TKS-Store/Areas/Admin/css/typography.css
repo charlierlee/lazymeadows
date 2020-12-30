@@ -1,0 +1,186 @@
+@media all {
+  /*
+  * @section global typography settings
+  *
+  * vertical rhythm settings (based on em-unit)
+  * -------------------------------------------
+  * basefont-size:  14px (87.5%)
+  * line-height  :  21px (factor: 1.5) */
+  /* (en) reset font size for all elements to standard (16 Pixel) */
+	html * {font-size: 100%}
+
+	textarea,
+	pre,
+	code,
+	kbd,
+	samp,
+	var { font-family: Consolas, "Lucida Console", "Andale Mono", "Bitstream Vera Sans Mono", "Courier New", Courier; }
+
+	/* font-size: 14px; */
+	body { font-family: 'Droid Sans', Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif; font-size: 87.5%; background: #fff; color: #3d3d3d; }
+
+	::-moz-selection { background: #b3d4fc; text-shadow: none; }
+	::selection { background: #b3d4fc; text-shadow: none; }
+
+	audio,
+	canvas,
+	img,
+	video { vertical-align: middle; }  
+	
+	/*--- Headings ------------------------------------------------------------------------*/
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 { font-family: "Droid Sans", Arial, Helvetica, sans-serif; font-weight: 400; color: #3d3d3d; margin: 0; }
+
+	h1 { font-size: 342.85714%; line-height: 0.875; margin: 0 0 0.4375em 0; } /* font-size: 48px; */
+	h2 { font-size: 228.57143%; line-height: 1.3125; margin: 0 0 0.65625em 0; } /* font-size: 32px; */
+	h3 { font-size: 171.42857%; line-height: 0.875; margin: 0 0 0.875em 0; } /* font-size: 24px; */
+	h4 { font-size: 150%; line-height: 1; margin: 0 0 1em 0; } /* font-size: 21px; */
+	h5 { font-size: 128.57143%; line-height: 1.16667; margin: 0 0 1.16667em 0; } /* font-size: 18px; */
+	h6 { font-size: 100%; font-weight: bold; line-height: 1.5; margin: 0 0 1.5em 0; } /* font-size: 14px; */
+
+  /* --- Lists -------------------------------------------------------------------------------- */
+	ul,
+	ol,
+	dl { font-size: 100%; line-height: 1.5; margin: 0 0 1.5em 0; }
+
+	ul { list-style-type: disc; }
+	ol { list-style-type: decimal; }
+	ul ul { list-style-type: circle; margin-top: 0; }
+	ol ol { list-style-type: lower-latin; margin-top: 0; }
+	ol ul { list-style-type: circle; margin-top: 0; }
+
+	li { line-height: 1.5em; margin-left: 0.8em; }
+
+	dt { font-weight: bold; }
+	dd { margin: 0 0 1em 0.8em; }
+
+  /* --- general text formatting  ------------------------------------------ */
+	p { font-size: 100%; line-height: 1.5; margin: 0 0 1.5em 0; }
+
+	blockquote,
+	cite,
+	q { font-family: Georgia, "Times New Roman", Times, serif; font-style: italic; }
+
+	blockquote { margin: 0 0 1em 0.8em; }
+	blockquote:before,
+	blockquote:after { content: ''; content: none; }
+
+	em,
+	i { font-style: italic; }
+
+	/* font-size: 12px; */
+	small { font-size: 85.71429%; line-height: 1.75; }
+
+	pre { line-height: 1.5; margin: 0 0 1.5em 0;}
+	kbd,
+	samp,
+	var { color: #666666; font-weight: bold; }
+	code,
+	var { font-family: monospace, serif; _font-family: 'courier new', monospace; font-size: 1em; font-style: italic; }
+
+	acronym,
+	abbr { border-bottom: 1px #aaa dotted; font-variant: small-caps; letter-spacing: .07em; cursor: help; }
+	abbr[title] { border-bottom: 1px #aaa dotted; }
+
+	hr { display: block; color: #fff; background: transparent; margin: 1em 0; padding:0; border: 0; border-bottom: 1px #eeeeee solid; height:1px }
+
+  /*--- Links ----------------------------------------------------------------------------------------- */
+	a { color: #58af19; background: transparent; text-decoration: none; -webkit-transition: opacity 0.2s ease; -moz-transition: opacity 0.2s ease; -o-transition: opacity 0.2s ease; transition: opacity 0.2s ease; }
+	a:hover,
+	a:focus { text-decoration: underline; }
+	a:hover img { background:none; opacity: 0.9; filter: alpha(opacity=90); }
+
+	/* --- images ------------------ */
+	img { margin: 0; vertical-align:middle }
+	.flexible { margin-bottom: 1.5em; max-width: 100%; height: auto; }
+	/* IE6 workaround - 2% space for possible borders */
+	* html .flexible { width: 98%; }
+
+	.bordered { margin-bottom: 1.5em; border: 2px #eee solid; border: 2px white solid; box-shadow: 0 0 3px rgba(0, 0, 0, 0.25); }
+
+  /**
+  * ----------------------------------------------------------------------- #
+  *
+  * Generic Content Classes
+  *
+  * (en) standard classes for positioning and highlighting
+  *
+  * @section content-generic-classes
+  */
+	.highlight { color: #cc3300; }
+	.dimmed { color: #888; }
+
+	.box { color: #fff; padding:25px 15px 30px 15px; margin: 0 0 2em; background: #eaeaea; }
+	.box > *:last-child { margin-bottom: 0; }
+	/*.box p { margin:0 }*/
+
+	.vid { margin: 0 0 2em }
+	.vid iframe {margin:0 0 1.5em;width:100%;border:0;height:195px}
+
+	.label { font-family: Verdana, Geneva, sans-serif; padding: 1px 6px 2px; display: inline-block; vertical-align: middle; letter-spacing: normal; white-space: nowrap; border-radius: 3px; background: #06C; color: #fff; font-size: 10px; line-height: 12px; }
+
+	.info { background: #f4f4f4; }
+	.success { background: #88cc88; }
+	.warning { background: #cccc88; }
+	.error { background: #cc8888; }
+
+	.float-left { float: left; display: inline; margin: 0 1em 1.5em 0; }
+	.float-right { float: right; display: inline; margin: 0 0 1.5em 1em; }
+	.center { display: block; text-align: center; margin: 0 auto; }
+
+  /**
+  * ------------------------------------------------------------------------------------------------- #
+  *
+  * Tables
+  *
+  * (en) Generic classes for table-width and design definition
+  *
+  * @section content-tables
+  */
+	table { width: 100%; color: #444; border-top: 1px #ccc solid; border-bottom: 1px #ccc solid; margin: 0 0 1.35714em 0; }
+	table.narrow { margin: 0 0 1.42857em 0; }
+	table.narrow th,
+	table.narrow td { padding: 0 0.5em; line-height: 1.42857; }
+	table.fixed { table-layout: fixed; }
+	table.bordertable { border: 1px #ccc solid; }
+	table.bordertable thead th { background: #e0e0e0; border-right: 1px #ccc solid; border-bottom: 1px #ccc solid; }
+	table.bordertable tbody th[scope="row"] { background: #f0f0f0; }
+	table.bordertable tbody th { border-right: 1px solid #ccc; }
+	table.bordertable tbody td { border-right: 1px solid #ccc; }
+
+	caption { font-variant: small-caps; }
+
+	th,
+	td { line-height: 1.5em; vertical-align: top; padding: 0.71429em 0.5em; }
+
+	th *:first-child,
+	td *:first-child { margin-top: 0; }
+
+	th.nowrap,
+	td.nowrap { white-space: nowrap; }
+
+	thead th { text-align: left; color: #000; border-bottom: 2px #000 solid; }
+
+	tbody { /* highlight row on mouse over */ }
+	tbody th { text-align: left; border-top: 1px solid #ccc; }
+	tbody td { text-align: left; border-top: 1px solid #ccc; }
+	tbody tr:hover th,
+	tbody tr:hover td { background: #f8f8f8; }
+
+  /* ==========================================================================
+   Forms
+   ========================================================================== */
+
+	fieldset { border: 0; margin: 0; padding: 0; }
+
+	button,
+	input,
+	select,
+	textarea { font-family: Helvetica, Arial, 'DejaVu Sans', 'Liberation Sans', Freesans, sans-serif; }
+
+	textarea { resize: vertical; }
+}

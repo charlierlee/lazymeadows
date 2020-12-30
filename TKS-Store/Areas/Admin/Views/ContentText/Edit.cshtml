@@ -1,0 +1,46 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ContentTextViewModel
+
+@{
+    ViewBag.Title = "Manage Page Content - " + @Model.Locale + " - " + @Model.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Page Content - @Model.Locale - @Model.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = Model.PageID }, new { })
+            </p>
+
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"><b>Section:</b> @Model.PageSectionName</div>
+                <div class="ym-g33 ym-gl"><b>Module Type:</b> @Model.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"><b>Name:</b> @Model.ModuleName</div>
+            </div>
+            <form id="frm" method="post" action="/admin/contenttext/edit/@Model.ModuleID">
+                <div class="ym-form ym-columnar">
+                    <div>
+                        <textarea id="Contents" name="Contents" class="ckeditor">@Model.Contents</textarea>
+                    </div>
+                    <div class="ym-fbox-button">
+                        <button class="ym-primary">Save</button>
+                        @Html.HiddenFor(m => m.ContentID)
+                        @Html.HiddenFor(m => m.ModuleID)
+                        @Html.HiddenFor(m => m.PageID)
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $(function () {
+            CKEDITOR.replace('Contents');
+        });
+    </script>
+}

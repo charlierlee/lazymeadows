@@ -1,0 +1,38 @@
+﻿@model TKS.Models.LoginViewModel
+
+@{
+    ViewBag.Title = "Login " + TKS.Areas.Admin.Models.Global.TitleSuffixSep + TKS.Areas.Admin.Models.Global.TitleSuffix;
+}
+
+<div class="section-box ym-form" style="width:450px;margin:20px auto 0">
+    <h2>Login to @TKS.Areas.Admin.Models.Global.TitleSuffix</h2>
+    @using (Html.BeginForm()) {
+        <div style="padding:10px 20px;" class="ym-columnar">
+            <div class="ym-fbox-text">
+                @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "ym-required" })
+                @Html.EditorFor(model => model.UserName)
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "ym-error" })
+            </div>
+            <div class="ym-fbox-text">
+                @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "ym-required" })
+                @Html.PasswordFor(model => model.Password)
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "ym-error" })
+            </div>
+            <div class="ym-fbox-check">
+                @Html.CheckBoxFor(model => model.RememberMe)
+                @Html.LabelFor(model => model.RememberMe)
+            </div>
+            <div style="text-align:center;color:#f00;margin: 0 0 5px">
+                @Html.DisplayFor(model => model.ErrorMessage)
+            </div>
+            <div class="ym-fbox-button">
+                <input type="submit" class="ym-primary ym-button" value="Login" />
+            </div>
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+        </div>
+    }
+
+    @{ Html.RenderAction("CreateUser", "Login");  }
+    @{ Html.RenderAction("Retrieve", "Login");  }
+</div>

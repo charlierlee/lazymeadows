@@ -1,0 +1,69 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ContentText
+
+@{
+    ViewBag.Title = "View History - " + @Model.Locale + " - " + @Model.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+    ViewBag.SelectedTab = 0;
+}
+
+<div class="container rounded bordered">
+    <h2>View History - @Model.Locale - @Model.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = Model.PageID, locale = Model.Locale }, new { })
+            </p>
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl">
+                    <b>Section:</b> @Model.PageSectionName
+                </div>
+                <div class="ym-g33 ym-gl">
+                    <b>Module Type:</b> @Model.ModuleTypeName
+                </div>
+                <div class="ym-g33 ym-gr">
+                    <b>Name:</b> @Model.ModuleName
+                </div>
+            </div>
+        </div>
+
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th scope="col">Created On</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (TKS.Areas.Admin.Models.CMS.ContentTextHistoryViewModel history in Model.History()) {
+                    <tr>
+                        <td><a href="#">@history.InsertDate</a></td>
+                        <td style="width:50px;text-align:center">
+                            @using (Html.BeginForm("historymakedraft", "contenttext", FormMethod.Post, new { @class = "ym-form" })) {
+                                <div class="ym-fbox-button">
+                                    <input type="submit" class="linkbutton" value="Make Draft" style="margin:0" />
+                                    <input type="hidden" name="ContentID" value="@history.ContentID" />
+                                    <input type="hidden" name="ModuleID" value="@history.ModuleID" />
+                                    <input type="hidden" name="PageID" value="@history.PageID" />
+                                </div>
+                            }
+                        </td>
+                        <td style="width:50px;text-align:center">
+                            @using (Html.BeginForm("historymakecurrent", "contenttext", new { id = 0 }, FormMethod.Post, new { @class = "ym-form" })) {
+                                <div class="ym-fbox-button">
+                                    <input type="submit" class="linkbutton" value="Make Current" style="margin:0" />
+                                    <input type="hidden" name="ContentID" value="@history.ContentID" />
+                                    <input type="hidden" name="ModuleID" value="@history.ModuleID" />
+                                    <input type="hidden" name="PageID" value="@history.PageID" />
+                                </div>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

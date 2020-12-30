@@ -1,0 +1,37 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.UserViewModel>
+
+@{
+    ViewBag.Title = "Online Accounts";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosAccounts;
+    ViewBag.NavActive = "user-online";
+}
+
+<div class="container rounded bordered">
+    <h2>Online Accounts</h2>
+    <div class="holder">
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th scope="col">User Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col" style="text-align:right">Created</th>
+                    <th scope="col" style="text-align:right">Last Login</th>
+                    <th scope="col" style="text-align:right">Last Activity</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td style="width:100px">
+                            <a href="/admin/users/edit/@item.UserName">@item.UserName</a>
+                        </td>
+                        <td>@item.Email</td>
+                        <td style="text-align:right">@item.CreationDate.ToShortDateString()</td>
+                        <td style="text-align:right">@item.LastLoginDate.ToShortDateString()</td>
+                        <td style="text-align:right">@item.LastActivityDate.ToShortDateString()</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

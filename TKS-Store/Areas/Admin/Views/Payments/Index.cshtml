@@ -1,0 +1,65 @@
+﻿@model TKS.Areas.Admin.Models.PaymentModel
+@{
+    ViewBag.Title = "Manage Mortgage Configuration";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-payments";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Mortgage Configuration</h2>
+    <div class="holder">
+        <div class="inner">
+            <form id="frm" method="post" class="ym-form" action="/admin/favorites">
+                <p>Simply list the Sullivan County MLS numbers of the properties you wish to appear in the Hand Picked Properties section of the homepage.</p>
+                <div class="ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="DownPayment">Down Payment</label>
+                        <input type="text" id="DownPayment" name="DownPayment" style="width:50px" value="@Model.DownPayment" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Fixed30Year">30 Year Fixed</label>
+                        <input type="text" id="Fixed30Year" name="Fixed30Year" style="width:50px" value="@Model.Fixed30Year" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Fixed15Year">15 Year Fixed</label>
+                        <input type="text" id="Fixed15Year" name="Fixed15Year" style="width:50px" value="@Model.Fixed15Year" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="ARM51">5/1 ARM</label>
+                        <input type="text" id="ARM51" name="ARM51" style="width:50px" value="@Model.ARM51" />
+                    </div>
+                    <div class="ym-fbox">
+                        <button id="cmdSave" class="ym-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $("#cmdSave").click(function (event) {
+                event.preventDefault();
+
+                var Data = {};
+                Data.DownPayment = $('#DownPayment').val();
+                Data.Fixed30Year = $('#Fixed30Year').val();
+                Data.Fixed15Year = $('#Fixed15Year').val();
+                Data.ARM51 = $('#ARM51').val();
+
+                $.ajax({
+                    url: "/admin/payments/index",
+                    async: false, type: "POST",
+                    data: JSON.stringify(Data),
+                    dataType: "json", contentType: "application/json; charset=utf-8",
+                    success: function (msg) {
+                        $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                        setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,84 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.LazyMeadows.SocialSite>
+@{
+    ViewBag.Title = "Manage Social Pages - " + @ViewBag.TownFormatted + " - Curate Pages";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-social";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Social Pages -  @ViewBag.TownFormatted - Curate Pages</h2>
+    <div class="holder">
+        <div class="inner">
+            <p><span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New Curated Page", "AddCuratedPage", "socialpages", new { id = ViewBag.Town }, new { })</p>
+            <p><span class="el el-random el-fw el-lg"></span>Drag rows to re-order</p>
+            <table class="tabular tablesortable">
+                <tbody>
+                    @foreach (var page in Model) {
+                        string rowID = "row_" + page.SocialPageSerial;
+                        <tr id="@rowID">
+                            @if (!string.IsNullOrEmpty(page.TitleText)) {
+                                <td>@Html.ActionLink(page.TitleText, "editcuratedpage", "socialpages", new { id = page.SocialPageSerial }, new { })</td>
+                            } else {
+                                <td>@Html.ActionLink("No Title Provided", "editcuratedpage", "socialpages", new { id = page.SocialPageSerial }, new { })</td>
+                            }
+                            <td>@page.PageType</td>
+                            <td style="width:50px;text-align:right">
+                                <button class="btn icon-red DeleteModule" data-serial="@page.SocialPageSerial"><span class="el el-trash-alt el-fw el-lg"></span></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $(function () {
+            $(".DeleteModule").click(function (ev) {
+                ev.preventDefault();
+
+                if (confirm("Are you sure you want to delete this page?")) {
+                    var Data = {};
+                    Data.SocialPageSerial = $(this).data('serial');
+
+                    $.ajax({
+                        url: "/admin/socialpages/pagedelete/@ViewBag.Town",
+                        async: false, type: "POST",
+                        dataType: "json", contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(Data),
+                        success: function () {
+                            location.reload();
+                        },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+                }
+            });
+
+            $(".tablesortable").sortable({
+                items: "tr",
+                cursor: 'move',
+                opacity: 0.8,
+                placeholder: "ui-state-highlight",
+                update: function () {
+                    var order = $(this).sortable("serialize");
+                    $.ajax({
+                        url: "/admin/socialpages/pagereorder",
+                        type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                        data: "{order: '" + order + "'}",
+                        success: function (response) {
+                            if (response == "success") {
+                                $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                                setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                            } else {
+                                alert('An error occurred');
+                            }
+                        },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+                }
+            });
+        });
+    </script>
+}

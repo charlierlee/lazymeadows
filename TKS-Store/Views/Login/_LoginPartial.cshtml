@@ -1,0 +1,13 @@
+﻿@model TKS.Models.User
+@if (Model.IsAuthenticated) {
+    using (Html.BeginForm("logout", "login", FormMethod.Post, new { id = "logoutForm" })) {
+        <p>
+            Welcome @Model.UserName
+            (<a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>)
+            <b><a href="/myaccount/">Your Account</a></b>
+        </p>
+    }
+} else {
+    <p><a href="/login/?ReturnUrl=@HttpUtility.UrlEncode(Request.Url.AbsolutePath)">Login</a> <span>|</span>
+    @Html.ActionLink("Create Account", "Register", "Account")</p>
+}

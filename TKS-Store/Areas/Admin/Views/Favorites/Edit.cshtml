@@ -1,0 +1,79 @@
+﻿@model TKS.Areas.Admin.Models.LazyMeadows.Favorite
+@{
+	ViewBag.Title = "Manage Hand Picked Property";
+	ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+	ViewBag.NavActive = "content-fav";
+}
+
+<div class="container rounded bordered">
+	<h2>Manage Hand Picked Property</h2>
+	<div class="holder">
+		<div class="inner">
+			<p>
+				@Html.ActionLink("Return to List", "Index")
+			</p>
+			<form id="frm" method="post" class="ym-form" enctype="multipart/form-data" action="/admin/favorites/edit/@Model.FavoriteID">
+				<div class="ym-columnar">
+@if (!@Model.MLS.StartsWith("Not")) {
+					<div class="ym-fbox">
+						<label for="MLS">MLS</label>
+						<input type="text" id="MLS" name="MLS" value="@Model.MLS" maxlength="50" />
+					</div>
+} else {
+					<div class="ym-fbox">
+						<label for="Town">Town</label>
+						<input type="text" id="Town" name="Town" value="@Model.Town" maxlength="50" />
+					</div>
+					<div class="ym-fbox">
+						<label for="Price">Price</label>
+						<input type="text" id="Price" name="Price" value="@Model.Price" maxlength="50" />
+					</div>
+					<div class="ym-fbox">
+						<label for="Link">Link</label>
+						<input type="text" id="Link" name="Link" value="@Model.Link" maxlength="250" />
+					</div>
+					<div class="ym-fbox">
+						<label for="Description">Description</label>
+						<textarea id="Description" name="Description" rows="3">@Model.Description</textarea>
+					</div>
+					<div class="ym-fbox">
+						<label for="fuImage">Image</label>
+						<input type="file" id="fuImage" name="fuImage" />
+					</div>
+					<div style="text-align:right;margin-right:80px;font-size:.8em">
+						Size should be 234 x 134px
+						@if (!string.IsNullOrEmpty(Model.Photo)) {
+							<span>| <a href='/img/favorites/@Model.FavoriteID/@Model.Photo' target="_blank">Preview</a></span>
+						}
+					</div>
+					<input type="hidden" id="MLS" name="MLS" />
+}
+				</div>
+				<div class="ym-fbox">
+					<button class="ym-primary">Save</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+@section cphFoot {
+	<script type="text/javascript">
+
+		$(function () {
+			$("#frm").validate();
+
+			$("#cmdDelete").click(function (event) {
+				event.preventDefault();
+				if (confirm("Are you sure you want to delete this blog post?")) {
+					$.ajax({
+						url: "/admin/favorite/delete/@Model.FavoriteID",
+						async: false, type: "POST",
+						dataType: "json", contentType: "application/json; charset=utf-8",
+						success: function (msg) { location.href = "/admin/blog"; },
+						error: function (e) { alert(e.status + ": " + e.statusText); }
+					});
+				}
+			});
+		});
+	</script>
+}

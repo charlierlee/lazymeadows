@@ -1,0 +1,45 @@
+﻿@{
+    ViewBag.Title = "Manage Account";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosAccounts;
+    ViewBag.NavActive = "user-user";
+}
+@section cphHeadCSS {
+    <link href="~/Areas/Admin/css/tablesorter.css" rel="stylesheet" />
+}
+
+
+<div class="container rounded bordered">
+    <h2>Manage Account</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Accounts", "Index")
+                &gt;&nbsp;Edit
+            </p>
+            <div id="tabs">
+                <ul>
+                    <li aria-controls="tabs-1">@Html.ActionLink("Account Information", "general", "Users", new { id = ViewBag.UserName }, new { })</li>
+                    <li aria-controls="tabs-2">@Html.ActionLink("Address Book", "Address", "Users", new { id = ViewBag.UserName }, new { })</li>
+                    <li aria-controls="tabs-3">@Html.ActionLink("Order History", "Orders", "Users", new { id = ViewBag.UserName }, new { })</li>
+                    <li aria-controls="tabs-4">@Html.ActionLink("Wishlist", "Wishlist", "Users", new { id = ViewBag.UserName }, new { })</li>
+                    <li aria-controls="tabs-5">@Html.ActionLink("Views", "Views", "Users", new { id = ViewBag.UserName }, new { })</li>
+                    <li aria-controls="tabs-6">@Html.ActionLink("Cart", "Cart", "Users", new { id = ViewBag.UserName }, new { })</li>
+                </ul>
+                <div id="tabs-1">Loading</div>
+                <div id="tabs-2">Loading</div>
+                <div id="tabs-3">Loading</div>
+                <div id="tabs-4">Loading</div>
+                <div id="tabs-5">Loading</div>
+                <div id="tabs-6">Loading</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $('[id$=tabs]').tabs({ cache: false });
+        });
+    </script>
+}

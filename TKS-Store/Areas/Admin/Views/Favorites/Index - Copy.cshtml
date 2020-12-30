@@ -1,0 +1,49 @@
+﻿@{
+    ViewBag.Title = "Manage Hand Picked Properties";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-fav";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Hand Picked Properties</h2>
+    <div class="holder">
+        <div class="inner">
+            <form id="frm" method="post" class="ym-form" action="/admin/favorites">
+                <p>Simply list the Sullivan County MLS numbers of the properties you wish to appear in the Hand Picked Properties section of the homepage.</p>
+                <div class="ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="Favorites">Hand Picked Properties</label>
+                        <textarea id="Favorites" name="Favorites" rows="3">@ViewBag.Favorites</textarea>
+                    </div>
+                    <div class="ym-fbox">
+                        <button id="cmdSave" class="ym-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $("#cmdSave").click(function (event) {
+                event.preventDefault();
+
+                var Data = {};
+                Data.Favorites = $('#Favorites').val();
+
+                $.ajax({
+                    url: "/admin/favorites/index",
+                    async: false, type: "POST",
+                    data: JSON.stringify(Data),
+                    dataType: "json", contentType: "application/json; charset=utf-8",
+                    success: function (msg) {
+                        $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                        setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            });
+        });
+    </script>
+}

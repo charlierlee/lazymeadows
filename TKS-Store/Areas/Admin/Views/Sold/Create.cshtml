@@ -1,0 +1,64 @@
+﻿@model TKS.Areas.Admin.Models.LazyMeadows.SoldViewModel
+@{
+    ViewBag.Title = "Add New Sold Property";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-sold";
+}
+
+<div class="container rounded bordered">
+    <h2>Add New Sold Property</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>&gt;&nbsp;@Html.ActionLink("Sold Property List", "Index", "sold")</p>
+            <form id="frm" method="post" action="/admin/sold/create" enctype="multipart/form-data">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <textarea id="Content" name="Content">@Model.Content</textarea>
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Thumbnail">Thumbnail (325x220)</label>
+                        <input type="file" value="@Model.Thumbnail" name="Thumbnail" id="Thumbnail" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Interior">Interior</label>
+                        <input type="file" value="@Model.Interior" name="Interior" id="Interior" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Exterior">Exterior</label>
+                        <input type="file" value="@Model.Exterior" name="Exterior" id="Exterior" />
+                    </div>
+                    <div class="ym-fbox">
+                        <button id="cmdSave" class="ym-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        CKEDITOR.replace('Content');
+        $(function () {
+            @* Setup form validation *@
+            //$("#frm").validate({ submitHandler: function (form) { SaveChanges(); } });
+            $("#frm").validate();
+
+            //function SaveChanges() {
+            //    var Data = {};
+            //    Data.VirtualPath = $('#VirtualPath').val();
+            //    Data.PageTypeID = $('#PageTypeID').val();
+            //    Data.Locale = $('#Locale').val();
+            //    Data.IncludeInSitemap = $('#IncludeInSitemap').val().is(':checked') ? true : false;
+
+            //    $.ajax({
+            //        url: "/admin/pages/create/",
+            //        async: false, type: "POST",
+            //        dataType: "json", contentType: "application/json; charset=utf-8",
+            //        data: JSON.stringify(Data),
+            //        error: function (e) { alert(e.status + ": " + e.statusText); }
+            //    });
+            //}
+        });
+    </script>
+}

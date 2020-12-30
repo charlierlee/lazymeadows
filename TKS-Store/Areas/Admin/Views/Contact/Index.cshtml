@@ -1,0 +1,60 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.CMS.ContactViewModel>
+@{
+    ViewBag.Title = "View Contacts";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContacts;
+    ViewBag.NavActive = "view-contacts";
+}
+
+<div class="container rounded bordered">
+    <h2>View Contacts</h2>
+    <div class="holder">
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th scope="col">Submitted</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Title/Company</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (TKS.Areas.Admin.Models.CMS.ContactViewModel item in Model) {
+                    <tr>
+                        <td>@item.SubmittedOn.ToShortDateString()<br />@item.ContactIP</td>
+                        <td>@item.FullName</td>
+                        <td><div>@item.Title</div><div>@item.Company</div></td>
+                        <td>@item.Email</td>
+                        <td>@item.Phone</td>
+                        <td>
+                            <button class="btn icon-red DeleteContact" data-id="@item.ContactSerial"><span class="el el-trash-alt el-fw el-lg"></span></button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $(".DeleteContact").click(function () {
+                if (confirm("Are you sure you want to delete this contact?")) {
+                    var Data = {};
+                    Data.ContactSerial = parseInt($(this).data("id"));
+                    var $tr = $(this).parent().parent();
+
+                    $.ajax({
+                        url: "/admin/contact/delete",
+                        async: false, type: "POST",
+                        dataType: "json", contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify(Data),
+                        success: function (msg) { $tr.remove(); },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+                }
+            });
+        });
+    </script>
+}

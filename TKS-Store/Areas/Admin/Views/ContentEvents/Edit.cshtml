@@ -1,0 +1,43 @@
+﻿@model TKS.Areas.Admin.Models.CMS.EventViewModel
+
+@{
+    ViewBag.Title = "Edit Event - " + @ViewBag.Locale + " - " + @ViewBag.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+}
+
+<div class="container rounded bordered">
+    <h2>Edit Event - @ViewBag.Locale - @ViewBag.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = ViewBag.PageID }, new { })
+                &nbsp;&gt;&nbsp;@Html.ActionLink("News List", "index", "contentevents", new { id = ViewBag.ModuleID }, new { })
+            </p>
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"> <b>Section:</b> @ViewBag.PageSectionName</div>
+                <div class="ym-g33 ym-gl"> <b>Module Type:</b> @ViewBag.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"> <b>Name:</b> @ViewBag.ModuleName</div>
+            </div>
+            <div id="tabs">
+                <ul>
+                    <li aria-controls="tabs-1">@Html.ActionLink("General", "general", "contentevents", new { id = Model.EventSerial }, new { })</li>
+                    <li aria-controls="tabs-2">@Html.ActionLink("SEO", "SEO", "contentevents", new { id = Model.EventSerial }, new { })</li>
+                </ul>
+                <div id="tabs-1">Loading</div>
+                <div id="tabs-2">Loading</div>
+            </div>
+        </div>
+    </div>
+</div>
+@section cphHeadCSS {
+}
+@section cphFoot{
+<script type="text/javascript">
+    $(function() {
+        @* Setup the tabs *@
+        $('[id$=tabs]').tabs({cache:false});
+    })
+</script>
+}

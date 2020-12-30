@@ -1,0 +1,124 @@
+﻿@model TKS.Areas.Admin.Models.UserViewModel
+@{
+    List<TKS.Areas.Admin.Models.Role> allRoles = Model.AllRoles();
+    List<string> rolesAssigned = Model.RolesAssigned;
+}
+
+    <div class="ym-grid ym-form">
+        <div class="ym-g50 ym-gl">
+            <form id="frm" action="/admin/users/edit/@Model.UserName" method="post">
+                <div class="ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="UserName">User Name</label>
+                        <input type="text" name="UserName" id="UserName" value="@Model.UserName" readonly="readonly" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Email" class="ym-required">Email</label>
+                        <input type="email" name="Email" id="Email" maxlength="256" value="@Model.Email" data-rule-required="true" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Comment">Comment</label>
+                        <input type="text" name="Comment" id="Comment" value="@Model.Comment" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="FirstName">First Name</label>
+                        <input type="text" name="FirstName" id="FirstName" value="@Model.FirstName" maxlength="100" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="LastName">Last Name</label>
+                        <input type="text" name="LastName" id="LastName" value="@Model.LastName" maxlength="100" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="LastName">Phone</label>
+                        <input type="text" name="Phone" id="Phone" value="@Model.Phone" maxlength="25" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="ViewBag.AccountLevelID">Account Level</label>
+                        @Html.DropDownList("AccountLevelID")
+                    </div>
+                    <div class="ym-fbox-check">
+                        <input type="checkbox" name="IsApproved" id="IsApproved" value="true" checked="checked" />
+                        <label for="IsApproved">Active User</label>
+                    </div>
+                </div>
+                <h3>Roles:</h3>
+                @{
+                int x = 0;
+                string ischecked = "";
+                foreach (var role in allRoles) {
+                    x++;
+                    ischecked = rolesAssigned.Contains(role.RoleName) ? "checked = 'checked'" : "";
+                    <div class="ym-fbox-check"><input id="UserRoles_@x.ToString()" type="checkbox" name="Roles" value="@role.RoleName" @ischecked /><label for="UserRoles_@x.ToString()">@role.RoleName</label></div>
+                }
+                }
+                <div class="ym-fbox" style="margin-top:10px">
+                    <button class="ym-primary">Save</button>
+                    @Html.AntiForgeryToken()
+                </div>
+                <div class="ym-fbox" style="text-align:center;color:#f00;margin: 0 0 5px">
+                    @ViewBag.StatusMessage
+                </div>
+            </form>
+        </div>
+
+        <div class="ym-g50 ym-gr">
+            <div class="subcr">
+                <div class="inner" style="padding-top:0">
+                    <table class="tabular">
+                        <tr>
+                            <td>Creation Date</td>
+                            <td>@Model.CreationDate.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <td>Last Activity Date</td>
+                            <td>@Model.LastActivityDate.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <td>Last Login Date</td>
+                            <td>@Model.LastLoginDate.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <td>Last Lockout Date</td>
+                            <td>@Model.LastLockoutDate.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <td>Password Changed</td>
+                            <td>@Model.LastPasswordChangedDate.ToShortDateString()</td>
+                        </tr>
+                        <tr>
+                            <td>Is Online?</td>
+                            <td>@Model.IsOnline</td>
+                        </tr>
+                        <tr>
+                            <td>Is Locked Out?</td>
+                            <td>@Model.IsLockedOut</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="ym-grid ym-form">
+                    <div class="ym-g50 ym-gl" style="text-align:center">
+                        @if (Model.IsLockedOut) {
+                            <form action="/admin/users/unlock" method="post">
+                                <button class="ym-secondary" onclick="return confirm('Are you sure you want to unlock this user.')">Unlock User</button>
+                                <input type="hidden" name="UserName" value="@Model.UserName" />
+                            </form>
+                        }
+                    </div>
+                    <div class="ym-g50 ym-gr" style="text-align:center">
+                        <form action="/admin/users/delete" method="post">
+                            <button class="btn icon-red" onclick="return confirm('Are you sure you want to delete this account?')"><span class="el el-trash-alt el-fw el-lg"></span>Delete User</button>
+                            <input type="hidden" name="UserName" value="@Model.UserName" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $("#frm").validate();
+        });
+    </script>
+}

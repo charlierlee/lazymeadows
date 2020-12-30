@@ -1,0 +1,119 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.LazyMeadows.Favorite>
+@{
+	ViewBag.Title = "Manage Hand Picked Properties";
+	ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+	ViewBag.NavActive = "content-fav";
+}
+
+<div class="container rounded bordered">
+	<h2>Manage Hand Picked Properties</h2>
+	<div class="holder">
+		<div class="inner">
+			<p><span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New MLS Listing", "CreateMLS", "favorites") &bull; @Html.ActionLink("Add New Custom Listing", "CreateCustom", "favorites")</p>
+			<div>
+				<span class="el el-random el-fw el-lg"></span>Drag rows to re-order
+			</div>
+			<table class="tabular tablesortable" style="margin-right:5px">
+				<thead>
+					<tr>
+						<th scope="col">MLS</th>
+						<th scope="col">Location</th>
+						<th scope="col" style="width: 20px"></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var fav in Model) {
+						string rowID = "row_" + fav.FavoriteID;
+						<tr id="@rowID">
+							<td>
+								@if (!string.IsNullOrEmpty(fav.Link)) {
+									<a href="@fav.Link" target="_blank">@fav.MLS</a>
+								} else {
+									<a href="/detail?mls=@fav.MLS" target="_blank">@fav.MLS</a>
+								}
+							</td>
+							<td>
+								@if (!string.IsNullOrEmpty(fav.Town)) {
+									<a href="/admin/favorites/edit/@fav.FavoriteID">@fav.Town</a>
+								} else {
+									<a href="/admin/favorites/edit/@fav.FavoriteID">No location</a>
+								}
+							</td>
+							<td style="text-align: center">
+								<button class="btn icon-red DeleteFav" data-fav="@fav.FavoriteID"><span class="el el-trash-alt el-fw el-lg"></span></button>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+@section cphFoot {
+	<script type="text/javascript">
+		$(function () {
+			$(".DeleteFav").click(function (ev) {
+				ev.preventDefault();
+
+				if (confirm("Are you sure you want to remove this Favorite?")) {
+					var Data = {};
+					Data.FavoriteID = $(this).data('fav');
+					$(this).parent().parent().remove();
+					$.ajax({
+						url: "/admin/favorites/delete/" + $(this).data('fav'),
+						async: false, type: "POST",
+						dataType: "json", contentType: "application/json; charset=utf-8",
+						data: JSON.stringify(Data),
+						success: function () {
+							location.href = "/admin/favorites";
+						},
+						error: function (e) { alert(e.status + ": " + e.statusText); }
+					});
+				}
+			});
+
+			$(".tablesortable").sortable({
+				items: "tr",
+				cursor: 'move',
+				opacity: 0.8,
+				placeholder: "ui-state-highlight",
+				update: function () {
+					var order = $(this).sortable("serialize");
+					$.ajax({
+						url: "/admin/favorites/reorder",
+						type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+						data: "{order: '" + order + "'}",
+						success: function (response) {
+							if (response == "success") {
+								$("#MsgBubble").html("<b>Changes Saved</b>").show();
+								setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+							} else {
+								alert('An error occurred');
+							}
+						},
+						error: function (e) { alert(e.status + ": " + e.statusText); }
+					});
+				}
+			});
+
+			$("#cmdSave").click(function (event) {
+				event.preventDefault();
+
+				var Data = {};
+				Data.Favorites = $('#Favorites').val();
+
+				$.ajax({
+					url: "/admin/favorites/index",
+					async: false, type: "POST",
+					data: JSON.stringify(Data),
+					dataType: "json", contentType: "application/json; charset=utf-8",
+					success: function (msg) {
+						$("#MsgBubble").html("<b>Changes Saved</b>").show();
+						setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+					},
+					error: function (e) { alert(e.status + ": " + e.statusText); }
+				});
+			});
+		});
+	</script>
+}

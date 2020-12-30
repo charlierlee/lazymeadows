@@ -1,0 +1,74 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ContentSlideModel
+
+@{
+    ViewBag.Title = "Manage Slide - " + @ViewBag.Locale + " - " + @ViewBag.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+    ViewBag.SelectedTab = 0;
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Slide - @ViewBag.Locale - @ViewBag.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = ViewBag.PageID }, new { })
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Slideshow List", "index", "contentslideshow", new { id = ViewBag.ModuleID }, new { })
+            </p>
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"> <b>Section:</b> @ViewBag.PageSectionName</div>
+                <div class="ym-g33 ym-gl"> <b>Module Type:</b> @ViewBag.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"> <b>Name:</b> @ViewBag.ModuleName</div>
+            </div>
+            <form id="frm" method="post" action="/admin/contentslideshow/edit/@Model.SlideSerial" enctype="multipart/form-data">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="SlideTitle">Slide Title</label>
+                        <input type="text" value="@Model.SlideTitle" id="SlideTitle" name="SlideTitle" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="SlideLink">Slide Link</label>
+                        <input type="text" value="@Model.SlideLink" id="SlideLink" name="SlideLink" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="SlideImageFile">Image</label>
+                        <input type="file" id="SlideImageFile" name="SlideImageFile" />
+                    </div>
+                    <div class="ym-fbox">
+                        <div class="ym-grid">
+                            <div class="ym-g50 ym-gl">
+                                <button class="ym-primary">Save</button>
+                            </div>
+                            <div class="ym-g50 ym-gr" style="text-align: right">
+                                <div>
+                                    <button class="btn icon-red" id="cmdDelete"><span class="el el-trash-alt el-fw el-lg"></span>Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            @Html.Raw(Model.SlideImageTag)
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $("#frm").validate();
+
+        $("#cmdDelete").click(function (event) {
+            event.preventDefault();
+            if (confirm("Are you sure you want to delete this slide?")) {
+                $.ajax({
+                    url: "/admin/contentslideshow/delete/@Model.SlideSerial",
+                    async: false, type: "POST",
+                    dataType: "json", contentType: "application/json; charset=utf-8",
+                    success: function (msg) { location.href = "/admin/contentslideshow/index/@Model.ModuleID"; },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        });
+    </script>
+}

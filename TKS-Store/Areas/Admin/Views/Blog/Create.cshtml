@@ -1,0 +1,118 @@
+﻿@model TKS.Areas.Admin.Models.Blog.BlogPostViewModel
+
+@{
+    ViewBag.Title = "Create Blog Post";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosBlog;
+    ViewBag.NavActive = "blog-posts";
+}
+
+<div class="container rounded bordered">
+    <h2>Create Blog Post</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>@Html.ActionLink("Return to List", "Index")</p>
+            <form id="frm" method="post" class="ym-form" action="/admin/blog/create">
+                <div class="ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="Title" class="ym-required">Headline</label>
+                        <input type="text" id="Title" name="Title" value="@Model.Title" data-rule-required="true" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="AuthorID" class="ym-required">Author</label>
+                        @Html.DropDownList("AuthorID", ViewBag.AuthorID as SelectList, "Please Select", new { data_rule_required="true" })
+                        @*<asp:RequiredFieldValidator ID="rfvAuthor" ControlToValidate="Author" Display="Dynamic" EnableClientScript="true" InitialValue="00000000-0000-0000-0000-000000000000" ErrorMessage="Please select the author" runat="server" SetFocusOnError="true" Text="*" ValidationGroup="vgForm" />*@
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Slug">Slug</label>
+                        <input type="text" id="Slug" name="Slug" value="@Model.Slug" maxlength="255" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="PublishDate" class="ym-required">Publication Date</label>
+                        <input type="date" id="PublishDate" name="PublishDate" value="@Model.PublishDate.ToShortDateString()" data-rule-required="true" data-rule-date="true" style="width:100px" maxlength="10" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Description">Short Description</label>
+                        <textarea id="Description" name="Description" rows="3">@Model.Description</textarea>
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="ThumbnailFilename">Thumbnail</label>
+                        <input type="text" id="ThumbnailFilename" name="ThumbnailFilename" value="@Model.ThumbnailFilename" class="ym-inline" style="width:300px;margin-top:3px" />
+                        <button id="cmdThumbnail" class="ym-button ym-small">Browse Server</button>
+                        <div id="roxyCustomPanel" style="display: none;">
+                            <iframe id="roxyFrame" style="width:100%;height:100%" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                    <div style="text-align:right;margin-right:80px;font-size:.8em">
+                        Size should be 234 x 134px
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="HeroFilename">Hero Image</label>
+                        <input type="text" id="HeroFilename" name="HeroFilename" value="@Model.HeroFilename" class="ym-inline" style="width:300px;margin-top:3px" />
+                        <button id="cmdHero" class="ym-button ym-small">Browse Server</button>
+                    </div>
+                    <div style="text-align:right;margin-right:80px;font-size:.8em">
+                        Size should be 688 wide by approximately 460px
+                    </div>
+                </div>
+                <div style="margin-top:10px">
+                    <textarea id="PostContent" name="PostContent" rows="3">@Model.PostContent</textarea>
+                </div>
+
+                <div class="ym-grid" style="margin-top:10px">
+                    <div class="ym-g50 ym-gl">
+                        <div class="ym-fbox-check">
+                            @Html.EditorFor(model => model.IsPublished)
+                            <label for="IsPublished">Publish Now?</label>
+                        </div>
+                        <div class="ym-fbox-check">
+                            @Html.EditorFor(model => model.IsCommentEnabled)
+                            <label for="IsCommentEnabled">Enable Comments?</label>
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="Tags">Tags</label>
+                            <textarea id="Tags" name="Tags" rows="3">@Model.Tags</textarea>
+                        </div>
+                    </div>
+                    <div class="ym-g50 ym-gr">
+                        <div class="ym-fbox-check">
+                            <h3>Category</h3>
+                            @foreach (var category in ViewBag.AllCategories) {
+                                <div class="ym-fbox-check"><input id="BlogCategory_@category.CategorySerial.ToString()" type="checkbox" name="Categories" value="@category.CategoryID" /><label for="BlogCategory_@category.CategorySerial.ToString()">@category.CategoryName</label></div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="ym-fbox">
+                    <button class="ym-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section cphFoot {
+    <script type="text/javascript">
+        CKEDITOR.replace('PostContent');
+
+        $(function () {
+            $("#frm").validate();
+
+            $("#PublishDate").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                showOtherMonths: true,
+                selectOtherMonths: true
+            });
+
+            $("#cmdThumbnail").click(function (event) {
+                event.preventDefault();
+                $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=ThumbnailFilename&selected=/assets/images/blog/thumb/fake.ext')
+                $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+            });
+            $("#cmdHero").click(function (event) {
+                event.preventDefault();
+                $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=HeroFilename&selected=/assets/images/blog/fake.ext')
+                $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,84 @@
+﻿@model TKS.Areas.Admin.Models.LazyMeadows.SocialSite
+
+@{
+    ViewBag.Title = "Edit Curated Page";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-social";
+}
+
+    <div class="container rounded bordered">
+        <h2>Edit Curated Page</h2>
+        <div class="holder">
+            <div class="inner">
+                <p>&gt;&nbsp;@Html.ActionLink("Curated Page List", "CuratePages", "socialpages", new { id = @Model.Town }, new { })</p>
+                <form id="frm" method="post" action="/admin/socialpages/editcuratedpage/@Model.SocialPageSerial">
+                    <div class="ym-form ym-columnar">
+                        <div class="ym-fbox">
+                            <label for="PageTypeID" class="ym-required">Page Type</label>
+                            @Html.DropDownList("PageType", ViewBag.PageType as SelectList, "Please Select", new { data_rule_required = "true" })
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="TitleText" class="ym-required">Title</label>
+                            <input type="text" value="@Model.TitleText" name="TitleText" id="TitleText" data-rule-required="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="URL" class="ym-required">URL</label>
+                            <input type="text" value="@Model.URL" name="URL" id="URL" data-rule-required="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="URL" class="ym-required">Image URL</label>
+                            <input type="text" value="@Model.ImageURL" name="ImageURL" id="ImageURL" data-rule-required="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <button id="cmdSave" class="ym-primary">Save</button>
+                            <input type="hidden" id="SocialPageSerial" name="SocialPageSerial" value="@Model.SocialPageSerial" />
+                            <input type="hidden" id="Town" name="Town" value="@Model.Town" />
+                        </div>
+                    </div>
+                </form>
+                <p>
+                    <b>Facebook</b> - Enter the address of the page in the URL field. It should look something like this:<br />
+                    https://www.facebook.com/Callicoon-New-York-181723735197685/timeline/<br /><br />
+                    Enter a title in the Title box, but this title is not visible on the public site.
+                </p>
+                <p>
+                    <b>Instagram User</b> - This is to link to a specific Instagram user's page.
+                    Simply enter a link to the user's page in the URL field.<br /><br />
+                    Enter a title for the user's page in the Title box, this title WILL BE visible on the public site.<br /><br />
+                    Enter a link for an image to be used in the Image URL box. It should be portrait orientation. Images from Instagram work well.
+                </p>
+                <p>
+                    <b>Pinterest Board</b> - This is to link to an entire board. Enter the address of the board in the URL field. It should look something like this:<br />
+                    https://www.pinterest.com/chellemeyers/d%C3%A9cor/<br /><br />
+                    Enter a title in the Title box, but this title is not visible on the public site.
+                </p>
+
+                <p>
+                    <b>Pinterest Pin</b> - This is to link to an individual pin. Enter the address of the pin in the URL field. It should look something like this:<br />
+                    https://www.pinterest.com/chellemeyers/d%C3%A9cor/<br /><br />
+                    Enter a title in the Title box, but this title is not visible on the public site.
+                </p>
+
+                <p>
+                    <b>Instagram Tag</b> - This is to link to Instagram image with a certain tag.
+                    Simply enter the tag, without the hash sign, into the URL field.<br /><br />
+                    Enter a title in the Title box, this title WILL BE visible on the public site.
+                </p>
+                <p>
+                    <b>Instagram Embed</b> - This is to link to an individual Instagram image.
+                    Click on the image so it comes up in the lightbox. Click the three dots in the lower right corner of the lightbox.
+                    Click Embed in the popup that opens. Click the green Copy Embed Code button.
+                    Paste the embed code into the URL field.<br /><br />
+                    Enter a title in the Title box, but this title is not visible on the public site.
+                </p>
+            </div>
+        </div>
+    </div>
+
+@section cphFoot {
+<script type="text/javascript">
+    $(function () {
+        $("#frm").validate();
+    });
+</script>
+}

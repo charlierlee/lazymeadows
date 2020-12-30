@@ -1,0 +1,58 @@
+﻿@model TKS.Areas.Admin.Models.LazyMeadows.Sold
+@{
+    ViewBag.Title = "Manage Sold Property";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-sold";
+    string thumb = "";
+    if (!string.IsNullOrEmpty(Model.Thumbnail)) {
+        thumb = "| <a href='/assets/images/sold/" + Model.ItemSerial.ToString() + "/" + Model.Thumbnail + "' target='_blank'>Preview</a>";
+    }
+    string interior = "";
+    if (!string.IsNullOrEmpty(Model.Interior)) {
+        interior = "| <a href='/assets/images/sold/" + Model.ItemSerial.ToString() + "/" + Model.Interior + "' target='_blank'>Preview</a>";
+    }
+    string exterior = "";
+    if (!string.IsNullOrEmpty(Model.Exterior)) {
+        exterior = "| <a href='/assets/images/sold/" + Model.ItemSerial.ToString() + "/" + Model.Exterior + "' target='_blank'>Preview</a>";
+    }
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Sold Property</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>&gt;&nbsp;@Html.ActionLink("Sold Property List", "Index", "sold")</p>
+            <form id="frm" method="post" action="/admin/sold/edit/@Model.ItemSerial" enctype="multipart/form-data">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <textarea id="Content" name="Content">@Model.Content</textarea>
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Thumbnail">Thumbnail (325x220) @Html.Raw(thumb)</label>
+                        <input type="file" value="@Model.Thumbnail" name="Thumbnail" id="Thumbnail" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Interior">Interior @Html.Raw(interior)</label>
+                        <input type="file" value="@Model.Interior" name="Interior" id="Interior" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Exterior">Exterior @Html.Raw(exterior)</label>
+                        <input type="file" value="@Model.Exterior" name="Exterior" id="Exterior" />
+                    </div>
+                    <div class="ym-fbox">
+                        <button id="cmdSave" class="ym-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        CKEDITOR.replace('Content');
+        $(function () {
+            $("#frm").validate();
+        });
+    </script>
+}

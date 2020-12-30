@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TKS.TestimonialViewModel>
+
+@{
+    ViewBag.Title = "Manage Testimonials";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutPage1.cshtml";
+}
+
+<h2>Manage Testimonials</h2>
+<div class="section-box">
+
+    <p>
+        <span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.TestimonialSerial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShortContent)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (TKS.TestimonialViewModel item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TestimonialSerial)
+                </td>
+                <td>
+                    @Html.Raw(item.ShortContent)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id=item.TestimonialSerial })
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>

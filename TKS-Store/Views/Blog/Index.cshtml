@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TKS.Models.Blog.BlogPost>
+
+    <article class="content-container cms">
+    <div class="section-box">
+        <div class="text-box">
+            @Html.Raw(ViewData["Image"])
+            <h1>
+                @ViewBag.BlogHeaderExt
+                <a href="@TKS.Areas.Admin.Models.Global.RSSFeedURL" class="noext"><img src="~/assets/images/icons/rss-32.png" height="32" width="32" alt="RSS" style="float:right;margin:8px 10px" /></a>
+            </h1>
+            @Html.Raw(ViewData["BodyContent"])
+            @Html.Raw(ViewBag.Pager)
+            <hr />
+
+            <div class='blog-posts'>
+                @foreach (var post in Model) {
+                    <div class='ym-clearfix'>
+                        <div class="author"><span class="el-icon-user icon"></span> @Html.Raw(post.AuthorURL)</div>
+                        <div class="categories"><span class="el-icon-bookmark icon"></span> @Html.Raw(post.AssignedCategories)</div>
+                    </div>
+                    <div class="date">
+                        @post.PublishDate.ToString("MMMM").Substring(0, 3)<br>
+                        <span class="day">@post.PublishDate.Day</span><br>
+                        <span class="year">@post.PublishDate.Year</span>
+                    </div>
+                    <h3><a href='@post.URL'>@post.Title</a></h3>
+                    <div class='ym-grid linearize-level-1'>
+                        <div class='ym-g33 ym-gl'>
+                            <div class='ym-gbox-left'>
+                                @if (!string.IsNullOrEmpty(post.ThumbnailFilename)) {
+                                <div class='blog-thumb'><a href='@post.URL'><img src='@post.ThumbnailFilename' alt='' class='resp' /></a></div>
+                                }
+                            </div>
+                        </div>
+                        <div class='ym-g66 ym-gr'>
+                            <div class='ym-gbox-right'>
+                                <div class='excerpt'>@post.Description</div>
+                                <div class='read-more'><a href='@post.URL'>Read More</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                }
+            </div>
+
+            @Html.Raw(ViewBag.Pager)
+        </div>
+    </div>
+</article>
+
+@section CSS {
+    <link href="/css/blog.css" rel="stylesheet" />
+}
+
+@section cphSideBar {
+    <aside class="sidebar">
+        @{Html.RenderPartial("_BlogArchives");}
+        @{Html.RenderPartial("_BlogCategories");}
+        @{Html.RenderPartial("_BlogRecent");}
+        @{Html.RenderPartial("_BlogTags");}
+        <div style="margin-bottom:1em"><a href="http://feedvalidator.org/check.cgi?url=@HttpUtility.UrlEncode(TKS.Areas.Admin.Models.Global.RSSFeedURL)" class="noext"><img src="/assets/images/icons/valid-rss.png" alt="[Valid RSS]" title="Validate my RSS feed" /></a></div>
+    </aside>
+}
+

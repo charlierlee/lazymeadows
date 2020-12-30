@@ -1,0 +1,55 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.Blog.BlogCategoryViewModel>
+
+@{
+    ViewBag.Title = "Manage Blog Categories";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosBlog;
+    ViewBag.NavActive = "blog-category";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Blog Categories</h2>
+    <div class="holder">
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th class="align-right">Posts</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>@Html.ActionLink(item.CategoryName, "edit", "blogcategory", new { id = item.CategoryID }, new { })</td>
+                        <td>@item.Description</td>
+                        <td class="align-right">@item.PostCount</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="inner">
+            <form method="post" id="frmInsert" action="/admin/blogcategory/create" class="ym-form ym-columnar" style="margin-top:2em">
+                <div class="ym-fbox">
+                    <label for="CategoryName">Category</label>
+                    <input type="text" id="CategoryName" name="CategoryName" maxlength="50" data-rule-required="true" />
+                </div>
+                <div class="ym-fbox">
+                    <label for="Description">Description</label>
+                    <textarea id="Description" name="Description" rows="3"></textarea>
+                </div>
+                <div class="ym-fbox">
+                    <button class="ym-primary">Add New</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+        $(function () {
+            $("#frmInsert").validate();
+        });
+    </script>
+}

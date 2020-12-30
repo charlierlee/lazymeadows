@@ -1,0 +1,36 @@
+﻿@model TKS.Areas.Admin.Models.LazyMeadows.Favorite
+@{
+	ViewBag.Title = "Create Custom Hand Picked Property";
+	ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+	ViewBag.NavActive = "content-fav";
+}
+
+<div class="container rounded bordered">
+	<h2>Create Custom Hand Picked Property</h2>
+	<div class="holder">
+		<div class="inner">
+			<p>
+				@Html.ActionLink("Return to List", "Index")
+			</p>
+			<form id="frm" method="post" class="ym-form" action="/admin/favorites/createmls">
+				<div class="ym-columnar">
+					<div class="ym-fbox">
+						<label for="MLS" class="ym-required">MLS</label>
+						<input type="text" id="MLS" name="MLS" value="@Model.MLS" maxlength="50" data-rule-required="true" />
+					</div>
+				</div>
+				<div class="ym-fbox">
+					<button class="ym-primary">Add</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+@section cphFoot {
+	<script type="text/javascript">
+
+		$(function () {
+			$("#frm").validate();
+		});
+	</script>
+}

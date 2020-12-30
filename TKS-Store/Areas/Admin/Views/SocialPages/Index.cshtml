@@ -1,0 +1,35 @@
+﻿@model TKS.Areas.Admin.Models.LazyMeadows.SocialPages
+
+@{
+    ViewBag.Title = "Manage Social Pages";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-social";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Social Pages</h2>
+    <div class="holder">
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th scope="col">Town</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var town in Model.Towns()) {
+                    <tr>
+                        <td>@town</td>
+                        <td>
+                            @Html.ActionLink("Curate Pages", "curatepages", "socialpages", new { id = town }, new { }) &nbsp;&bull;&nbsp;
+                            @Html.ActionLink("Edit News", "editnews", "socialpages", new { id = town }, new { }) &nbsp;&bull;&nbsp;
+                            @Html.ActionLink("Edit Dining", "editdining", "socialpages", new { id = town }, new { }) &nbsp;&bull;&nbsp;
+                            @Html.ActionLink("Edit Lodging", "editlodging", "socialpages", new { id = town }, new { })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

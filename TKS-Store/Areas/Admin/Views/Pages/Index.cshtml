@@ -1,0 +1,35 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.CMS.ContentPageViewModel>
+
+@{
+    ViewBag.Title = "Manage Pages";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Pages</h2>
+    <div class="holder">
+        <div class="inner">
+            <span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New", "Create")
+        </div>
+        <table class="tabular">
+            <thead>
+                <tr>
+                    <th scope="col">Virtual Path</th>
+                    <th scope="col">Locale</th>
+                    <th scope="col">Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var page in Model) {
+                    <tr>
+                        <td>@Html.ActionLink(page.VirtualPath, "edit", "pages", new { id = page.PageID.ToString() }, new { })</td>
+                        <td>@page.Locale</td>
+                        <td>@page.PageTitle</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

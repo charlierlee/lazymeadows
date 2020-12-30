@@ -1,0 +1,35 @@
+﻿@model TKS.Areas.Admin.Models.LazyMeadows.SocialPage
+
+@{
+    ViewBag.Title = "Manage Social Pages - " + @Model.TownFormatted + " - Dining";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-social";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Social Pages -  @Model.TownFormatted - Dining</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Social Pages", "", "socialpages")
+            </p>
+            <form id="frm" method="post" action="/admin/socialpages/editdining/@Model.Town">
+                <div style="margin:1em 0">
+                    <textarea id="Col2" name="Col2" rows="10">@Model.Col2</textarea>
+                </div>
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <button class="ym-primary">Save</button>
+                        <input type="hidden" id="town" name="town" value="@Model.Town" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        CKEDITOR.replace('Col2');
+    </script>
+}

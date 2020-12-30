@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.LazyMeadows.SoldViewModel>
+@{
+    ViewBag.Title = "Manage Sold Properties";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-sold";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Sold Properties</h2>
+    <div class="holder">
+        <div class="inner">
+            <p><span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New Sold Property", "Create", "sold")</p>
+            <p><span class="el el-random el-fw el-lg"></span>Drag rows to re-order</p>
+            <table class="tabular tablesortable">
+                <tbody>
+                    @foreach (var page in Model) {
+                        string rowID = "row_" + page.Serial;
+                        <tr id="@rowID">
+                            @if (!string.IsNullOrEmpty(page.Content)) {
+                                <td><a href="/admin/sold/edit/@page.Serial">@Html.Raw(page.Content)</a></td>
+                            } else {
+                                <td><a href="/admin/sold/edit/@page.Serial">No Content Provided</a></td>
+                            }
+                            <td style="width:50px;text-align:right">
+                                <button class="btn icon-red DeleteModule" data-serial="@page.Serial"><span class="el el-trash-alt el-fw el-lg"></span></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $(function () {
+            $(".DeleteModule").click(function (ev) {
+                ev.preventDefault();
+
+                if (confirm("Are you sure you want to delete this property?")) {
+                    $.ajax({
+                        url: "/admin/sold/delete/" + $(this).data('serial'),
+                        async: false, type: "POST",
+                        dataType: "json", contentType: "application/json; charset=utf-8",
+                        success: function () { location.reload(); },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+                }
+            });
+
+            $(".tablesortable").sortable({
+                items: "tr",
+                cursor: 'move',
+                opacity: 0.8,
+                placeholder: "ui-state-highlight",
+                update: function () {
+                    var order = $(this).sortable("serialize");
+                    $.ajax({
+                        url: "/admin/sold/reorder",
+                        type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                        data: "{order: '" + order + "'}",
+                        success: function (response) {
+                            if (response == "success") {
+                                $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                                setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                            } else {
+                                alert('An error occurred');
+                            }
+                        },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+                }
+            });
+        });
+    </script>
+}

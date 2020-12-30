@@ -1,0 +1,87 @@
+﻿@model IEnumerable<TKS.Areas.Admin.Models.CMS.GalleryItemModel>
+@{
+    ViewBag.Title = "Manage Gallery";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Gallery - @ViewBag.Locale - @ViewBag.URL</h2>
+    <div class="holder">
+        <div class="inner" style="padding-bottom:0">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = ViewBag.PageID }, new { })
+            </p>
+
+            <div class="ym-grid" style="margin-bottom:2em">
+                <div class="ym-g33 ym-gl"><b>Section:</b> @ViewBag.PageSectionName</div>
+                <div class="ym-g33 ym-gl"><b>Module Type:</b> @ViewBag.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"><b>Name:</b> @ViewBag.ModuleName</div>
+            </div>
+
+            @if (Model.Count() > 0) {
+                <div class="ym-grid">
+                    <div class="ym-g50 ym-gl">
+                        <span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New Slide", "Create", new { id = ViewBag.ModuleID }, new { })
+                    </div>
+                    <div class="ym-g50 ym-gr align-right">
+                        <span class="el el-random el-fw el-lg"></span>Drag the images to change the sort order.
+                    </div>
+                </div>
+
+                <div class="ym-clearfix">
+                    <ul id="sortablelist">
+                        @foreach (var slide in Model) {
+                            <li class="rowid" id="id_@slide.GalleryPhotoSerial">
+                                <div class="img">@Html.Raw(slide.PhotoImageTag)</div>
+                                <div class="title">@Html.ActionLink(slide.PhotoTitle.Length > 0 ? slide.PhotoTitle : "No Title", "edit", "contentgallery", new { id = slide.GalleryPhotoSerial }, new { })</div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+            <p><span class="el el-plus el-fw green"></span> @Html.ActionLink("Add New Slide", "Create", new { id = ViewBag.ModuleID }, new { })</p>
+
+            <div id="fileuploader">Upload</div>
+
+        </div>
+    </div>
+</div>
+
+@section cphFoot {
+    <script type="text/javascript">
+    $(function () {
+        $("#fileuploader").uploadFile({
+            url: "/admin/contentgallery/uploadbulk/@ViewBag.ModuleID",
+                multiple: true,
+                fileName: "PhotoPath",
+                onSuccess: function (files, data, xhr) {
+                    window.location.href = '/admin/contentgallery/index/@ViewBag.ModuleID';
+                }
+            });
+            $("#sortablelist").sortable({
+                items: "li",
+                cursor: 'move',
+                opacity: 0.8,
+                placeholder: "ui-state-highlight",
+                update: function () { sendOrderToServer(); }
+            });
+            function sendOrderToServer() {
+                var order = $("#sortablelist").sortable("serialize");
+                $.ajax({
+                    url: "/admin/contentgallery/reorder",
+                    type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: "{order: '" + order + "'}",
+                    success: function (response) {
+                        if (response == "success") {
+                            $("#MsgBubble").html("<b>Changes Saved</b>").show();
+                            setTimeout(function () { $('#MsgBubble').fadeOut(); }, 2000);
+                        } else { alert('An error occurred'); }
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        });
+    </script>
+}

@@ -1,0 +1,8 @@
+﻿<div class="section-box">
+    <h2><span>Recent Posts</span></h2>
+    <ul class="recent-posts">
+        @foreach (var post in TKS.Models.Blog.BlogPosts.RecentPosts(2)) {
+            <li><a href='/blog/@post.PostSerial.ToString()/@post.Slug'>@post.PublishDate.ToShortDateString() - @post.Title</a></li>
+        }
+    </ul>
+</div>

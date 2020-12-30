@@ -1,0 +1,177 @@
+﻿@model TKS.Areas.Admin.Models.CMS.NewsModel
+
+@{
+    ViewBag.Title = "Create News Item - " + @ViewBag.Locale + " - " + @ViewBag.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+    ViewBag.SelectedTab = 0;
+}
+
+<div class="container rounded bordered">
+    <h2>Create News Item - @ViewBag.Locale - @ViewBag.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = ViewBag.PageID }, new { })
+                &nbsp;&gt;&nbsp;@Html.ActionLink("News List", "index", "contentnews", new { id = ViewBag.ModuleID }, new { })
+            </p>
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"> <b>Section:</b> @ViewBag.PageSectionName</div>
+                <div class="ym-g33 ym-gl"> <b>Module Type:</b> @ViewBag.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"> <b>Name:</b> @ViewBag.ModuleName</div>
+            </div>
+            <form id="frm" method="post" action="/admin/contentnews/create/@ViewBag.ModuleID">
+                <div class="ym-form">
+                    <div class="ym-columnar">
+                        <div class="ym-fbox">
+                            <label for="Headline" class="ym-required">Headline</label>
+                            <input type="text" value="@Model.Headline" id="Headline" name="Headline" data-rule-required="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="DateReleased" class="ym-required">Publication Date</label>
+                            <input type="date" id="DateReleased" name="DateReleased" value="@Model.DateReleased.ToShortDateString()" data-rule-required="true" data-rule-date="true" style="width:100px" maxlength="10" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="HeaderImage">
+                                @if (!string.IsNullOrEmpty(Model.HeaderImage)) {
+                                    <span><a href='@Model.HeaderImage' target="_blank" title="Header Image"><span class="el el-picture el-fw el-lg"></span></a></span>
+                                } else {
+                                    <span class="btn icon-disabled"><span class="el el-picture el-fw el-lg"></span>&nbsp;</span>
+                                }
+                                Header Image
+                            </label>
+                            <input type="text" value="@Model.HeaderImage" id="HeaderImage" name="HeaderImage" class="ym-inline" style="width:300px;margin-top:3px" />
+                            <button id="cmdHeaderImage" class="ym-button ym-small">Browse Server</button>
+                            <div id="roxyCustomPanel" style="display: none;">
+                                <iframe id="roxyFrame" style="width:100%;height:100%" frameborder="0"></iframe>
+                            </div>
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="AttachedArticle">
+                                @if (!string.IsNullOrEmpty(Model.AttachedArticle)) {
+                                    <span><a href="@Model.AttachedArticle" target="_blank" title="Attachment"><span class="el el-file el-fw el-lg"></span></a>&nbsp;</span>
+                                } else {
+                                    <span class="btn icon-disabled"><span class="el el-file el-fw el-lg"></span>&nbsp;</span>
+                                }
+                                Attached Article
+                            </label>
+                            <input type="text" value="@Model.AttachedArticle" id="AttachedArticle" name="AttachedArticle" class="ym-inline" style="width:300px;margin-top:3px" />
+                            <button id="cmdAttachedArticle" class="ym-button ym-small">Browse Server</button>
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="LinkedArticle">
+                                @if (!string.IsNullOrEmpty(Model.LinkedArticle)) {
+                                    <span><a href="@Model.LinkedArticle" target="_blank" title="Linked Site"><span class="el el-link el-fw el-lg"></span></a>&nbsp;</span>
+                                } else {
+                                    <span class="btn icon-disabled"><span class="el el-link el-fw el-lg"></span>&nbsp;</span>
+                                }
+                                Linked Article
+                            </label>
+                            <input type="url" value="@Model.LinkedArticle" id="LinkedArticle" name="LinkedArticle" data-rule-url="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="ShortDescription">Short Description</label>
+                            <textarea id="ShortDescription" name="ShortDescription">@Model.ShortDescription</textarea>
+                        </div>
+                        <div class="ym-grid">
+                            <div class="ym-g33 ym-gl">
+                                <div class="ym-fbox switch">
+                                    <label>
+                                        @if (Model.IsFeatured) {
+                                            <span><span class="el el-home el-fw el-lg"></span>&nbsp;</span>
+                                        } else {
+                                            <span class="btn icon-disabled"><span class="el el-home el-fw el-lg"></span>&nbsp;</span>
+                                        }
+                                        Is Featured
+                                    </label>
+                                    <span class="cb-enable @(Model.IsFeatured ? " selected" : "")"><span>Yes</span></span>
+                                    <span class="cb-disable @(!Model.IsFeatured ? " selected" : "")"><span>No</span></span>
+                                    <input type="hidden" id="IsFeatured" name="IsFeatured" value="@(Model.IsFeatured ? "true" : "false")" />
+                                </div>
+                            </div>
+                            <div class="ym-g33 ym-gl">
+                                <div class="ym-fbox switch">
+                                    <label>
+                                        @if (Model.IsPublished) {
+                                            <span class="el el-check el-fw el-lg"></span>
+                                        } else {
+                                            <span class="el el-check-empty el-fw el-lg"></span>
+                                        }
+                                        Is Published
+                                    </label>
+                                    <span class="cb-enable @(Model.IsPublished ? " selected" : "")"><span>Yes</span></span>
+                                    <span class="cb-disable @(!Model.IsPublished ? " selected" : "")"><span>No</span></span>
+                                    <input type="hidden" id="IsPublished" name="IsPublished" value="@(Model.IsPublished ? "true" : "false")" />
+                                </div>
+                            </div>
+                            <div class="ym-g33 ym-gr">
+                                <div class="ym-fbox switch">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="margin:1em 0">
+                        <label>
+                            @if (!string.IsNullOrEmpty(Model.Content)) {
+                                <span><a href='/press/@Model.NewsSerial/@TKS.Areas.Admin.Models.tksUtil.FormatRouteURL(Model.Headline)' target="_blank" title="Page"><span class="el el-website el-fw el-lg"></span></a></span>
+                            } else {
+                                <span class="btn icon-disabled"><span class="el el-website el-fw el-lg"></span>&nbsp;</span>
+                            }
+                            Page Content
+                        </label>
+                        <textarea id="Content" name="Content" rows="3">@Model.Content</textarea>
+                    </div>
+                    <div class="ym-fbox">
+                        <button class="ym-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+@section cphHeadCSS {
+    <link href="~/Areas/Admin/css/switch/switch.css" rel="stylesheet" />
+}
+@section cphFoot{
+    <script type="text/javascript">
+        CKEDITOR.replace('Content');
+
+        $(function () {
+            $("#frm").validate();
+
+            @* Setup the Yes/No buttons *@
+            $(".cb-enable").click(function () {
+                $(this).siblings().removeClass('selected');
+                $(this).addClass('selected');
+                $(this).siblings('input').val('true');
+            });
+            $(".cb-disable").click(function () {
+                $(this).siblings().removeClass('selected');
+                $(this).addClass('selected');
+                $(this).siblings('input').val('false');
+            });
+
+            if (!Modernizr.inputtypes.date) {
+                $("#DateReleased").datepicker({
+                    changeMonth: true,
+                    changeYear: true,
+                    showOtherMonths: true,
+                    selectOtherMonths: true
+                });
+            }
+
+            $("#cmdAttachedArticle").click(function (event) {
+                event.preventDefault();
+                $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=file&txtFieldId=AttachedArticle&selected=/assets/files/fake.ext')
+                $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+            });
+            $("#cmdHeaderImage").click(function (event) {
+                event.preventDefault();
+                $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=HeaderImage&selected=/assets/images/fake.ext')
+                $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+            });
+        })
+    </script>
+}

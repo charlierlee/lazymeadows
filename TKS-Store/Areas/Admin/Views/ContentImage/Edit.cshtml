@@ -1,0 +1,60 @@
+﻿@model TKS.Areas.Admin.Models.CMS.ImageViewModel
+
+@{
+    ViewBag.Title = "Manage Image - " + @Model.Locale + " - " + @Model.URL;
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosContent;
+    ViewBag.NavActive = "content-pages";
+    ViewBag.SelectedTab = 0;
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Image - @Model.Locale - @Model.URL</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>
+                &gt;&nbsp;@Html.ActionLink("Page List", "", "pages")
+                &nbsp;&gt;&nbsp;@Html.ActionLink("Module List", "edit", "pages", new { id = Model.PageID }, new { })
+            </p>
+            <div class="ym-grid" style="margin-bottom:1em">
+                <div class="ym-g33 ym-gl"> <b>Section:</b> @Model.PageSectionName</div>
+                <div class="ym-g33 ym-gl"> <b>Module Type:</b> @Model.ModuleTypeName</div>
+                <div class="ym-g33 ym-gr"> <b>Name:</b> @Model.ModuleName</div>
+            </div>
+            <form id="frm" method="post" action="/admin/contentimage/edit/@Model.ModuleID">
+                <div class="ym-form ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="AltText">Alt Text</label>
+                        <input type="text" value="@Model.AltText" id="AltText" name="AltText" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Filename">Image</label>
+                        <input type="text" value="@Model.Filename" id="Filename" name="Filename" class="ym-inline" style="width:300px;margin-top:3px" placeholder="Click here to select a file" />
+                        <button id="cmdImage" class="ym-button ym-small">Browse Server</button>
+                        <div id="roxyCustomPanel" style="display: none;">
+                            <iframe id="roxyFrame" style="width:100%;height:100%" frameborder="0"></iframe>
+                        </div>
+                    </div>
+                    <div class="ym-fbox">
+                        <button class="ym-primary">Save</button>
+                        @Html.HiddenFor(m => m.ContentID)
+                        @Html.HiddenFor(m => m.ModuleID)
+                        @Html.HiddenFor(m => m.PageID)
+                    </div>
+                    <div>@Html.Raw(Model.ImgTag)</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section cphFoot{
+    <script type="text/javascript">
+        $("#frm").validate();
+
+        $("#cmdImage").click(function (event) {
+            event.preventDefault();
+            $('#roxyFrame').attr('src', '/fileman/index.html?integration=custom&type=image&txtFieldId=Filename&selected=/assets/images/fake.ext')
+            $('#roxyCustomPanel').dialog({ modal: true, width: 875, height: 600 });
+        });
+    </script>
+}

@@ -1,0 +1,61 @@
+﻿@model TKS.Models.CMS.ContactUs
+@{
+    Layout = "~/Views/Shared/_LayoutContent.cshtml";
+}
+    @Html.Raw(ViewData["Body"])
+    <div class="ym-grid linearize-level-1">
+        <div class="ym-g60 ym-gl">
+            <div class="ym-gbox-left">
+                <div class="contact ym-form">
+                    <form id="frm" action="/contact/docontact" method="post">
+                        <div class="ym-fbox">
+                            <label for="" class="ym-required">Name</label>
+                            <input type="text" value="@Model.Name" id="Name" name="Name" data-rule-required="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="" class="ym-required">Email</label>
+                            <input type="text" value="@Model.Email" id="Email" name="Email" data-rule-required="true" data-rule-email="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="" class="ym-required">Phone Number</label>
+                            <input type="text" value="@Model.Phone" id="Phone" name="Phone" data-rule-required="true" />
+                        </div>
+                        <div class="ym-fbox">
+                            <label for="" class="ym-required">Comments</label>
+                            <textarea id="Comments" name="Comments" data-rule-required="true">@Model.Comments</textarea>
+                        </div>
+                        @if (TKS.Areas.Admin.Models.Global.reCAPTCHASiteKey.Length > 0) {
+                        <div style="margin:0 0 0 17px"><div class="g-recaptcha" data-sitekey="@TKS.Areas.Admin.Models.Global.reCAPTCHASiteKey"></div></div>
+                        }
+                        <div class="ym-fbox">
+                            <input type="submit" class="ym-danger ym-button" value="Send" />
+                        </div>
+                        <div style="color:#f00;font-weight:bold">@ViewBag.Message</div>
+                        <input type="hidden" name="referrer" id="referrer" value="@Request.Url" />
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="ym-g40 ym-gr">
+            <div class="ym-gbox-right">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d23892.73827398022!2d-74.53800882234539!3d41.534771499099534!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c3549e9deafa23%3A0x2f83cbe34751fee8!2sThe%20Catskill%20Farms!5e0!3m2!1sen!2sus!4v1597001281374!5m2!1sen!2sus" style="width:100%;height:350px;border:0;" frameborder="0" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                <p>2458 State Route 209<br />
+                Wurtsboro, NY 12790 <br />
+                <a href="mailto:homes@lazymeadowsrealty.com">homes@lazymeadowsrealty.com</a><br />
+                (845) 707-5274</p>
+
+            </div>
+        </div>
+    </div>
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $("#frm").validate();
+        });
+    </script>
+@if (TKS.Areas.Admin.Models.Global.reCAPTCHASiteKey.Length > 0) {
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+}
+    @Html.Raw(ViewData["Scripts"])
+}

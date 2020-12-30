@@ -1,0 +1,60 @@
+﻿@model TKS.Areas.Admin.Models.Blog.BlogCategoryViewModel
+
+@{
+    ViewBag.Title = "Manage Blog Category";
+    ViewBag.LeftNavPanel = TKS.Areas.Admin.Models.Global.mnuPosBlog;
+    ViewBag.NavActive = "blog-category";
+}
+
+<div class="container rounded bordered">
+    <h2>Manage Blog Category</h2>
+    <div class="holder">
+        <div class="inner">
+            <p>@Html.ActionLink("Return to List", "Index")</p>
+            <form id="frm" method="post" class="ym-form" action="/admin/blogcategory/edit/@Model.CategoryID">
+                <div class="ym-columnar">
+                    <div class="ym-fbox">
+                        <label for="CategoryName" class="ym-required">Category Name</label>
+                        <input type="text" id="CategoryName" name="CategoryName" value="@Model.CategoryName" maxlength="50" data-rule-required="true" />
+                    </div>
+                    <div class="ym-fbox">
+                        <label for="Description">Description</label>
+                        <textarea id="Description" name="Description" rows="3">@Model.Description</textarea>
+                    </div>
+                    <div class="ym-grid">
+                        <div class="ym-g50 ym-gl">
+                            <div class="ym-fbox">
+                                <button class="ym-primary">Save</button>
+                            </div>
+                        </div>
+                        <div class="ym-g50 ym-gr align-right">
+                            <button class="btn icon-red" id="cmdDelete"><span class="el el-trash-alt el-fw el-lg"></span>Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section cphFoot {
+    <script src="/js/libs/jquery.charactercounter.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $("#frm").validate();
+            $("#Description").characterCounter({ limit: '200', counterFormat: 'Characters remaining: %1' });
+
+            $("#cmdDelete").click(function (event) {
+                event.preventDefault();
+                if (confirm("Are you sure you want to delete this blog category?")) {
+                    $.ajax({
+                        url: "/admin/blogcategory/delete/@Model.CategoryID",
+                        async: false, type: "POST",
+                        dataType: "json", contentType: "application/json; charset=utf-8",
+                        success: function (msg) { location.href = "/admin/blogcategory"; },
+                        error: function (e) { alert(e.status + ": " + e.statusText); }
+                    });
+                }
+            });
+        });
+    </script>
+}

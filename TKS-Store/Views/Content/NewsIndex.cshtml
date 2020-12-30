@@ -1,0 +1,49 @@
+﻿@model IEnumerable<TKS.Models.CMS.NewsModel>
+
+
+@Html.Raw(ViewData["Body"])
+
+@foreach (var item in Model) {
+<div class='listview'>
+    <div>
+        <p><img alt='' src='@item.HeaderImage'></p>
+        @if (!string.IsNullOrEmpty(item.URL) && !string.IsNullOrEmpty(item.Content)) {
+        <h2><a href='@item.URL'>@item.Headline</a></h2>
+        } else {
+        <h2>@item.Headline</h2>
+        }
+        <div>@TKS.Areas.Admin.Models.tksUtil.NL2BR(item.ShortDescription)</div>
+        <div style='padding-top:1em'>
+        @if (!string.IsNullOrEmpty(item.LinkedArticle)) {
+            <span><a href='@item.LinkedArticle' target='_blank'>Visit Website</a>&nbsp;&nbsp;</span>
+        }
+        @if (!string.IsNullOrEmpty(item.AttachedArticle)) {
+            <span><a href='@item.AttachedArticle' target='_blank'>View Original Article</a>&nbsp;&nbsp;</span>
+        }
+        </div>
+    </div>
+</div>
+}
+
+
+@section cphSidebar {
+    <aside class="sidebar">
+        @{ Html.RenderAction("GetCategorySideMenu", "Service");  }
+        @{ Html.RenderAction("GetRecentlyViewed", "Service");  }
+        <a href="https://app.e2ma.net/app2/audience/signup/1733888/1721486/?v=a" data-fancybox-type="iframe" class="fancybox">.</a>
+    </aside>
+}
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $("#cat-accordion").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false
+            });
+            @Html.Raw(ViewData["FooterCode"])
+        });
+    </script>
+    @Html.Raw(ViewData["Scripts"])
+}

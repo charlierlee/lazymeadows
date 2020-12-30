@@ -1,0 +1,178 @@
+﻿@model TKS.Models.Blog.BlogPostViewModel
+ @{
+     TKS.Models.User user = new TKS.Models.User();
+ }
+
+<article class="content-container cms">
+    <div class="section-box">
+        <div class="text-box">
+            <div class="blog-post">
+                <div class="blog-hero">@Html.Raw(Model.HeroObject)</div>
+                <h1>@Model.Title</h1>
+                <div class="ym-grid linearize-level-1">
+                    <div class="ym-g50 ym-gl">
+                        <span class="blog-author">@Html.Raw(Model.AuthorURL)</span>
+                    </div>
+                    <div class="ym-g50 ym-gr" style="text-align: right">
+                        <div class="blog-pubDate">@Model.PublishDate.ToShortDateString()</div>
+                        <div class="blog-category">@Html.Raw(Model.AssignedCategories)</div>
+                    </div>
+                </div>
+                <div style="padding: 20px 0">
+                    <div class="blog-content ym-clearfix">
+                        <div>@Html.Raw(Model.AudioObject)</div>
+                        @Html.Raw(Model.PostContent)
+                        <div>@Html.Raw(Model.VideoObject)</div>
+                    </div>
+
+                    <div style="margin-bottom:1em">@Html.Raw(Model.Tags)</div>
+
+                    <div class="ym-grid blog-nav">
+                        <div class="ym-g50 ym-gl">@Html.Raw(Model.PostPrev)</div>
+                        <div class="ym-g50 ym-gr" style="text-align:right">@Html.Raw(Model.PostNext)</div>
+                    </div>
+                    @Html.Raw(Model.EditLink)
+                    <hr />
+                    <div class="commentbox">
+                        <div class="share ym-clearfix">
+                            @{ Html.RenderAction("Social", "Service");  }
+                        </div>
+                        <h3 id="comments">Comments</h3>
+                        @Html.Raw(Model.Comments)
+
+                        <div id="pnlComment" class="blog-comment-form">
+@if (!Model.IsCommentEnabled) {
+                            <p>Comments are disabled for this post</p>
+} else {
+    if (user.IsAuthenticated) {
+                            <form id="frmComment" action="/blog/commentsubmit" method="post" class="ym-form">
+                                <h3>What do you think?</h3>
+                                <div class="ym-fbox">
+                                    <label for="comment">Comment:</label>
+                                    <textarea id="comment" name="comment" rows="5" style="width:90%" class="ym-inline" data-rule-required="true"></textarea>
+                                </div>
+                                <div class="ym-fbox-button">
+                                    <input type="submit" value="Send" />
+                                </div>
+                            </form>
+} else {
+                            <p>
+                                To comment on posts or receive comment notifications,
+                                <a href="/login/?ReturnUrl=@HttpUtility.UrlEncode(Request.Url.AbsolutePath)">login or create an account.</a>
+                            </p>
+    }
+}
+                        </div>
+
+                        <div id="pnlReply" class="blog-comment-form" style="display: none;">
+                            <form id="frmReply" action="/blog/commentsubmit" method="post" class="ym-form">
+                                <div class="ym-fbox-text">
+                                    <label for="Reply">Write a reply...</label>
+                                    <textarea id="Reply" name="comment" rows="4" style="width:90%" class="ym-inline" data-rule-required="true"></textarea>
+                                </div>
+                                <div class="ym-fbox-button">
+                                    <input type="submit" value="Reply" />
+                                    <a href="javascript:;" onclick="hideReplyPanel();">Cancel</a>
+                                </div>
+                                <input type="hidden" name="ParentCommentID" id="ParentCommentID" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
+
+
+@section CSS {
+    <link href="/css/blog.css" rel="stylesheet" />
+}
+
+@section cphSideBar {
+    <aside class="sidebar">
+        @{Html.RenderPartial("_BlogArchives");}
+        @{Html.RenderPartial("_BlogCategories");}
+        @{Html.RenderPartial("_BlogRecent");}
+        @{Html.RenderPartial("_BlogTags");}
+    </aside>
+}
+
+@section cphFoot {
+    <script type='text/javascript'>
+    function windowpop(url, width, height) {
+        var leftPosition, topPosition;
+        //Allow for borders.
+        leftPosition = (window.screen.width / 2) - ((width / 2) + 10);
+        //Allow for title and status bars.
+        topPosition = (window.screen.height / 2) - ((height / 2) + 50);
+        //Open the window.
+        window.open(url, "Window2", "status=no,height=" + height + ",width=" + width + ",resizable=yes,left=" + leftPosition + ",top=" + topPosition + ",screenX=" + leftPosition + ",screenY=" + topPosition + ",toolbar=no,menubar=no,scrollbars=no,location=no,directories=no");
+        return false;
+    }
+
+    function hideReplyPanel() {
+        $("#pnlReply").hide();
+        $('.rLink').show();
+        $('#frmComment').show();
+    }
+
+    $(function () {
+        @* Setup form validation *@
+        $("#frmComment").validate({ submitHandler: function (form) { SaveComment(); } });
+        $("#frmReply").validate({ submitHandler: function (form) { SaveReply(); } });
+
+        function SaveComment() {
+            if ($("#frmComment").valid()) {
+                var Data = {};
+                Data.PostID = '@Model.PostID';
+                Data.Comment = $('#comment').val();
+
+                $.ajax({
+                    url: '/blog/commentsubmit',
+                    async: false, type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(Data),
+                    success: function () {
+                        $("#frmComment").hide();
+                        alert("Thank you for your comment. Once your comment has been reviewed and approved, it will be posted here.");
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        }
+
+        function SaveReply() {
+            if ($("#frmReply").valid()) {
+                var Data = {};
+                Data.PostID = '@Model.PostID';
+                Data.ParentCommentID = $('#ParentCommentID').val();
+                Data.Comment = $('#Reply').val();
+
+                $.ajax({
+                    url: '/blog/commentsubmit',
+                    async: false, type: "POST", dataType: "json", contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(Data),
+                    success: function () {
+                        $("#frmComment").show();
+                        $("#pnlReply").hide();
+                        alert("Thank you for your comment. Once your comment has been reviewed and approved, it will be posted here.");
+                    },
+                    error: function (e) { alert(e.status + ": " + e.statusText); }
+                });
+            }
+        }
+
+        $(".rLink").click(function (event) {
+            event.preventDefault();
+
+            $postCommentId = $(this).data("id");
+            $('#ParentCommentID').val($postCommentId);
+            $(this).after($("#pnlReply"));
+            $("#pnlReply").show();
+            $('.rLink').show();
+            $(this).hide();
+            $('#frmComment').hide();
+        });
+    });
+    </script>
+}

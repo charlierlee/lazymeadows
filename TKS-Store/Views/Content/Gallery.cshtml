@@ -1,0 +1,39 @@
+﻿@model IEnumerable<TKS.Models.CMS.GalleryItemModel>
+
+
+@Html.Raw(ViewData["Body"])
+
+@if (Model.Count() > 0) {
+    <ul>
+        @foreach (var item in Model) {
+            <li>
+                <a class="fancybox" rel="group" href="/assets/images/gallery/@item.ModuleID/@item.PhotoPath?width=500&height=500">
+                    <img class="img-responsive" src="/assets/images/gallery/@item.ModuleID/@item.PhotoPath?width=200&height=200" alt="">
+                </a>
+            </li>
+        }
+    </ul>
+}
+
+@section cphSidebar {
+    <aside class="sidebar">
+        @{ Html.RenderAction("GetCategorySideMenu", "Service");  }
+        @{ Html.RenderAction("GetRecentlyViewed", "Service");  }
+        <a href="https://app.e2ma.net/app2/audience/signup/1733888/1721486/?v=a" data-fancybox-type="iframe" class="fancybox">.</a>
+    </aside>
+}
+
+@section cphFoot {
+    <script type='text/javascript'>
+        $(function () {
+            $("#cat-accordion").accordion({
+                collapsible: true,
+                heightStyle: "content",
+                active: false
+            });
+            $(".fancybox").fancybox();
+            @Html.Raw(ViewData["FooterCode"])
+        });
+    </script>
+    @Html.Raw(ViewData["Scripts"])
+}

@@ -1,0 +1,13 @@
+﻿@{
+    List<TKS.Models.Blog.BlogCategoryViewModel> categoryList = new TKS.Models.Blog.BlogCategories().Categories();
+}
+@if (categoryList.Count > 0) {
+    <div class="section-box">
+        <h2><span class="el-icon-bookmark icon"></span>Categories</h2>
+        <ul>
+            @foreach (var cat in categoryList) {
+                <li><a href="/blog/cat/@cat.CategorySerial.ToString()/@TKS.Areas.Admin.Models.tksUtil.FormatRouteURL(cat.CategoryName)" rel="nofollow">@cat.CategoryName (@cat.PostCount.ToString())</a></li>
+            }
+        </ul>
+    </div>
+}

@@ -1,0 +1,226 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]> 		<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en-us"> <![endif]-->
+<!--[if IE 7]>    		<html class="no-js lt-ie9 lt-ie8" lang="en-us"> <![endif]-->
+<!--[if IE 8]>    		<html class="no-js lt-ie9" lang="en-us"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en-us">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @Html.Raw(ViewBag.Meta)
+    @Styles.Render("~/css/std")
+    @RenderSection("CSS", required: false)
+    <!--[if lte IE 7]>
+        @Styles.Render("~/css/ie")
+    <![endif]-->
+    @Scripts.Render("~/js/modernizr")
+    @RenderSection("cphHead", required: false)
+</head>
+<body class="content">
+    <!-- Google Tag Manager -->
+    <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-5RRDSW"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    '//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-5RRDSW');</script>
+    <!-- End Google Tag Manager -->
+
+    @RenderSection("cphTopContent", false)
+    @RenderSection("cphSidebar", required: false)
+
+        <ul class="ym-skiplinks">
+            <li><a class="ym-skip" href="#nav">Skip to navigation (Press Enter)</a></li>
+            <li><a class="ym-skip" href="#main">Skip to main content (Press Enter)</a></li>
+        </ul>
+        <header id="header">
+            <nav id="nav">
+                <div>
+                    <div class="ym-wbox">
+                        <div>
+                            <ul class="megamenu">
+                                <li>
+                                    <a href="javascript:;">Menu</a>
+                                    <div class="submenu">
+                                        <ul class="list list-unstyled">
+                                            @*<li><a href="/social">The Sullivan Buzz</a></li>*@
+                                            <li><a href="/search">Residential Search</a></li>
+                                            <li><a href="/searchland">Land Search</a></li>
+                                            <li><a href="/searchcomm">Commercial Search</a></li>
+                                            <li><a href="/sold">Sold Properties</a></li>
+                                            <li><a href="/about">About Us</a></li>
+                                            <li><a href="/services">One Stop Shop</a></li>
+                                            @*<li><a href="/events">Community Calendar</a></li>
+                                            <li><a href="/testimonials">Testimonials</a></li>*@
+                                            <li><a href="/contact-us">Contact Us</a></li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <div class="ym-wrapper">
+                <div class="ym-wbox">
+                    <div class="ym-grid">
+                        <div class="ym-gl block-left">
+                            <div class="ym-gbox">
+                                <a href="/"><img src="/img/logo.png" width="auto" height="140" alt="Lazy Meadows Realty" /></a>
+                            </div>
+                        </div>
+                        <div class="ym-gr block-right">
+                            <div class="ym-gbox">
+                                @RenderSection("cphTeaser", required: false)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div id="main">
+            <div class="ym-wrapper">
+                <div class="ym-wbox">
+                    <div class="align-center main-contact"><a href="mailto:info@lazymeadowsrealty.com">info@lazymeadowsrealty.com</a></div>
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <footer id="footer">
+            @RenderSection("cphFooterTop", required: false)
+            <div class="community-calendar">
+                <div class="ym-wrapper">
+                    <div class="ym-wbox">
+                        @Html.Action("CommunityCalendar", "Content")
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="ym-wrapper">
+                    <div class="ym-wbox">
+                        <!-- Start of Two Grids -->
+                        <div class="ym-grid linearize-level-1">
+                            <div class="ym-g33 ym-gl cinfo">
+                                <div class="ym-gbox">
+                                    <ul class="list list-unstyled">
+                                        <li>
+                                            <div class="ym-clearfix">
+                                                <i class="el el-map-marker el-fw el-lg float-left"></i>2458 State Route 209<br />
+                                                Wurtsboro, NY 12790
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ym-clearfix">
+                                                <i class="el el-envelope el-fw el-lg float-left"></i><a href="mailto:info@lazymeadowsrealty.com">info@lazymeadowsrealty.com</a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="ym-clearfix">
+                                                <i class="el el-phone el-fw el-lg float-left"></i>(845) 707-5274
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ym-g66 ym-gr social">
+                                <div class="ym-gbox">
+                                    @*<a href="#" title="facebook" target="_blank"><i class="el el-facebook el-2x el-fw"></i></a>
+                                    <a href="#" title="Twitter" target="_blank"><i class="el el-twitter el-2x el-fw"></i></a>
+                                    <a href="#" title="LinkedIn" target="_blank"><i class="el el-linkedin el-2x el-fw"></i></a>
+                                    <a href="#" title="Google+" target="_blank"><i class="el el-googleplus el-2x el-fw"></i></a>
+                                    <a href="#" title="YouTube" target="_blank"><i class="el el-youtube el-2x el-fw"></i></a>
+                                    <a href="#" title="Pinterest" target="_blank"><i class="el el-pinterest el-2x el-fw"></i></a>*@
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End of Two Grids -->
+                    </div>
+                </div>
+            </div>
+        </footer>
+        @*
+    <script type="text/javascript" src="/smoothness/jquery-ui.js"></script>
+*@
+            <script type="text/javascript">
+                //(function ($) {
+                //    var width = $(window).width();
+
+
+                //    if (width > 1201) {
+                //        var $descriptions = $('#carousel-descriptions').children('li'),
+                //          $controls = $('#carousel-controls').find('span'),
+
+
+
+                //        $carousel = $('#carousel')
+                //              .roundabout({ childSelector: "img", minOpacity: 1, autoplay: true, autoplayDuration: 60000, autoplayPauseOnHover: true, minScale: .8, maxScale: 1.1, enableDrag: true, responsive: true })
+                //              .on('focus', 'img', function () {
+                //                  var slideNum = $carousel.roundabout("getChildInFocus");
+
+                //                  $descriptions.add($controls).removeClass('current');
+                //                  $($descriptions.get(slideNum)).addClass('current');
+
+                //                  $($controls.get(slideNum)).addClass('current');
+
+                //              });
+                //    }
+                //    else if (width < 1024) {
+                //        var $descriptions = $('#carousel-descriptions').children('li'),
+                //          $controls = $('#carousel-controls').find('span'),
+
+
+
+                //        $carousel = $('#carousel')
+                //              .roundabout({ childSelector: "img", minOpacity: 1, autoplay: true, autoplayDuration: 60000, autoplayPauseOnHover: true, enableDrag: true, responsive: true })
+                //              .on('focus', 'img', function () {
+                //                  var slideNum = $carousel.roundabout("getChildInFocus");
+
+                //                  $descriptions.add($controls).removeClass('current');
+                //                  $($descriptions.get(slideNum)).addClass('current');
+
+                //                  $($controls.get(slideNum)).addClass('current');
+
+                //              });
+                //    }
+
+                //    $controls.on('click dblclick', function () {
+                //        var slideNum = -1,
+                //      		i = 0, len = $controls.length;
+
+                //        for (; i < len; i++) {
+                //            if (this === $controls.get(i)) {
+                //                slideNum = i;
+                //                break;
+                //            }
+                //        }
+
+                //        if (slideNum >= 0) {
+                //            $controls.removeClass('current');
+                //            $(this).addClass('current');
+                //            $carousel.roundabout('animateToChild', slideNum);
+                //        }
+
+                //        $('#carousel').roundabout({
+                //            enableDrag: true
+                //        });
+                //    });
+                //}(jQuery));
+
+
+            </script>
+
+        @Scripts.Render("~/js/jquery")
+        @Scripts.Render("~/js/jqueryui")
+        @Scripts.Render("~/js/jqueryval")
+        @Scripts.Render("~/js/std")
+        <script>
+            $(function () {
+                $("#frmSubscribe").validate();
+            });
+        </script>
+        @RenderSection("cphFoot", required: false)
+
+    </body>
+    </html>
