@@ -264,3 +264,7 @@
 	.review-box h3 {color:#ff6501;margin:0;font-size:1.25em}
 
 }
+
+.me-character-counter {
+	display:none!important;
+}

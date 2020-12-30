@@ -989,6 +989,7 @@
     <Content Include="Areas\Admin\css\smoothness\jquery-ui.structure.min.css" />
     <Content Include="Areas\Admin\css\smoothness\jquery-ui.theme.css" />
     <Content Include="Areas\Admin\css\smoothness\jquery-ui.theme.min.css" />
+    <Content Include="js\libs\jquery.charactercounter.js" />
     <Content Include="js\libs\jquery.rwdImageMaps.js" />
     <Content Include="js\libs\jquery.rwdImageMaps.min.js">
       <DependentUpon>jquery.rwdImageMaps.js</DependentUpon>

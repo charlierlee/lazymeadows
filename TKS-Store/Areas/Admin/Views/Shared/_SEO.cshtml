@@ -127,14 +127,15 @@
 <script src="/js/libs/jquery.charactercounter.js"></script>
 <script type="text/javascript">
     $(function () {
-        $("#MetaTitle").characterCounter({ limit: '60', counterFormat: 'Characters remaining: %1' });
-        $("#MetaDescription").characterCounter({ limit: '155', counterFormat: 'Characters remaining: %1' });
-        $("#ogTitle").characterCounter({ limit: '95', counterFormat: 'Characters remaining: %1' });
-        $("#ogDescription").characterCounter({ limit: '300', counterFormat: 'Characters remaining: %1' });
+        $("#MetaTitle").characterCounter({ maxChars: 60, counterFormat: 'Characters remaining: %1',postCountMessage:null
+ });
+        $("#MetaDescription").characterCounter({ maxChars: 155, counterFormat: 'Characters remaining: %1', postCountMessage: null });
+        $("#ogTitle").characterCounter({ maxChars: 95, counterFormat: 'Characters remaining: %1', postCountMessage: null });
+        $("#ogDescription").characterCounter({ maxChars: 300, counterFormat: 'Characters remaining: %1', postCountMessage: null });
         //$("#gName").characterCounter({ limit: '200', counterFormat: 'Characters remaining: %1' });
-        $("#gDescription").characterCounter({ limit: '200', counterFormat: 'Characters remaining: %1' });
-        $("#twitterTitle").characterCounter({ limit: '70', counterFormat: 'Characters remaining: %1' });
-        $("#twitterDescription").characterCounter({ limit: '200', counterFormat: 'Characters remaining: %1' });
+        $("#gDescription").characterCounter({ maxChars: 200, counterFormat: 'Characters remaining: %1', postCountMessage: null });
+        $("#twitterTitle").characterCounter({ maxChars: 70, counterFormat: 'Characters remaining: %1', postCountMessage: null });
+        $("#twitterDescription").characterCounter({ maxChars: 200, counterFormat: 'Characters remaining: %1', postCountMessage: null });
 
         @* Setup form validation *@
         $("#frmSEO").validate({ submitHandler: function (form) { SaveChanges(); } });
@@ -173,7 +174,7 @@
                 Data.twitterTitle = $('#twitterTitle').val();
                 Data.twitterDescription = $('#twitterDescription').val();
                 Data.twitterImage = $('#twitterImage').val();
-
+              
                 $.ajax({
                     @*url: '@Url.Action("UpdateSEO", "Blog")',*@
                     url: '@ViewBag.PostURL',
