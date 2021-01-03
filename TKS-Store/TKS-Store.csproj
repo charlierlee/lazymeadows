@@ -646,6 +646,7 @@
     <Content Include="css\smoothness\images\ui-icons_888888_256x240.png" />
     <Content Include="css\smoothness\images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="css\smoothness\jquery-ui.css" />
+    <Content Include="css\swiper.css" />
     <Content Include="dl\listings-commercial_industrial.txt" />
     <Content Include="dl\listings-land.txt" />
     <Content Include="dl\listings-residential.txt" />
