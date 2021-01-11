@@ -12,8 +12,6 @@
         <!-- Additional required wrapper -->
         <div class="swiper-wrapper">
             <!-- Slides -->
-
-            <div class="swiper-slide"><img alt="" class="fancybox" data-fancybox-group="listing" src="https://mymodernmet.com/wp/wp-content/uploads/2018/10/Mou-Aysha-portrait-photography-3-200x300.jpg"></div>
             @foreach (string path in listing.Images)
             {
                 <div class="swiper-slide"><img src="@path" alt="" class="fancybox" data-fancybox-href="@path" data-fancybox-group="listing" /></div>
@@ -299,7 +297,7 @@
 @section CSS {
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
-    <link href="~/css/swiper.css" rel="stylesheet" />
+    <link href="~/css/swiper.css?v=1" rel="stylesheet" />
 }
 
 @section cphTeaser {
@@ -312,14 +310,35 @@
     <script type="text/javascript">
         var swiper = new Swiper('.swiper-container', {
             loop: true,
+            centeredSlides: true,
+            centeredSlidesBounds: true,
             loopFillGroupWithBlank: true,
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            },
+            centerInsufficientSlides:true,
             spaceBetween: 5,
             slidesPerView: 3,
-            freeMode: true,
+            breakpoints: {
+
+                // when window width is <= 320px     
+                320: {
+                    slidesPerView: 1,
+                    spaceBetween: 10
+                },
+                // when window width is <= 480px     
+                480: {
+                    slidesPerView: 1,
+                    spaceBetween: 10
+                },
+                840: {
+                    slidesPerView: 2,
+                    spaceBetween: 10
+                },
+                1040: {
+                    slidesPerView: 3,
+                    spaceBetween: 10
+                }
+
+            },
+            //freeMode: true,
             pagination: {
                 el: '.swiper-pagination',
                 clickable: true,
